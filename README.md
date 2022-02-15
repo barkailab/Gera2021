@@ -6,9 +6,9 @@ Mat files containing the processed sequencing data are available on dryad (), an
 GithubDesc contains a list and short description of all files (scripts from GitHub and data files from dryad) comprising this repository.
 
 The main seuencing data can be divided into 3 types: 
-- genome-wide profiles (norm): the normalised read densities along all S cerevisiae bases (~12 mio) - mean for all strains, ind. repeats for wild-type strains
-- promoter binding signal (sumProm): the cumultative read densities over each yeast promoter in the 6701-orf format
-- 7mer binding signal: the average read density around (20bp) all promoter occurences of each possible 7mer (8192 7mers).
+- genome-wide profiles (norm): the normalised read densities along all S cerevisiae bases (~12 mio) - mean for all strains, indidividual repeats for wild-type strains
+- promoter binding signal (sumProm): the cumultative read densities over each yeast promoter in the 6701-orf format - mean and individual repeats for all strains.
+- 7mer binding signal: the average read density around (20bp) all promoter occurences of each possible 7mer (8192 7mers)- mean and individual repeats for all strains.
 
 The order of the 6701-orf and 8192-7mer format can be found in gene_infoR64, part of group_imp.mat, and nmerRed table, part of nmer7N0.mat, respectively.
 Several functions in this repository, e.g. Violin.m, brewermap.m and cbrewer2.m, were taken from Matlab File Exchange.
