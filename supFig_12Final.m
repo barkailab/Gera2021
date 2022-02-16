@@ -1,13 +1,12 @@
-%% supplementary Fig1 
+%% Figure 1-figure supplement 1
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 load('SGDTargetsRegulatorsResults.mat')
 load('allSGDtargets.mat');
 GP=load('./group_imp.mat')
 
-%% violin plots + SGD targets + sumProm scatters
+%% Figure 1-figure supplement 1B: violin plots, SGD targets, sumProm scatters
 familyNames = {'Zinc finger', 'Zinc cluster, bZIP', 'others'};
-
 sumPromWTs = nan(6701, size(summaryTable,1)*2);
 c=1;
 for i = 1:size(summaryTable,1)
@@ -78,18 +77,15 @@ for i = 1:size(summaryTable,1)
     setAxisExponent()
     text(0, max(ylim), sprintf(' %.2f', corr(sumPromWTs(:,i*2-1), sumPromWTs(:,i*2),'rows','pairwise')), 'HorizontalAlignment','left','VerticalAlignment','top')
 end
-
 %saveas(gcf, 'FigS1violinAndScatters.svg')
 
 
-%% sumProm corr matrix including repeats
+%% Figure 1-figure supplement 1C: binding signal corr matrix including repeats (promoters, 7mers)
 goodPos = createIntBasesForMotif();
 TFnames = [summaryTable.p1,summaryTable.p2]';
 [~, idxVec, sumPromRep, repIdx] = getRepeatsCorr(TFnames(:),'dataType','sumProm');
 [~, ~, mer7Rep, ~] = getRepeatsCorr(TFnames(:),'dataType','7mer');
-
 samplesWOrepeats = unique(idxVec(all(isnan(sumPromRep),1)));
-
 for i = samplesWOrepeats'
     sumPromRep(:,idxVec==i) = repmat(checWTdelLactisSwap.sumProm.(TFnames{i}),1,sum(idxVec==i));
     currNorm = chromosomes2fullProfile(checWTdelLactisSwap, TFnames(i));
@@ -121,17 +117,4 @@ axis square
 
 cbr = colorbar()
 ylabel(cbr, 'correlation','fontSize',20)
-
-
-
-
-
-
-
-
-
-
-
-
-
 
