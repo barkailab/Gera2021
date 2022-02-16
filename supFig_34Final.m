@@ -1,4 +1,4 @@
-%% supplementary Fig2 
+%% Figure 3-figure supplement 1 and Figure 4-figure supplement 1B
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 load('promCorrSort.mat')
@@ -6,9 +6,9 @@ if ~exist('checWTdelLactisSwap','var')
     load('checWTdelLactisSwap.mat')
 end
 
-%% DBDs barcodes NO LINES + mean signal around the InVitro motif
+%% Figure 3-figure supplement 1: DBDs sequence alignmnet between paralogs ("barcodes") and mean signal around In-Vitro motif
 clear xPos yPos
-pfamAlignFiles = dir('/home/labs/barkailab/felixj/SimilarityRegression-master/Example/ScerDBD/*.psi')
+pfamAlignFiles = dir('./ScerDBD/*.psi')
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y', '-'};
 groupSize = [2,3,8,7,1];
 baseColor = [255, 92, 51; 128, 191, 255; 255, 214, 51; 55, 153, 102]/255;
@@ -77,8 +77,6 @@ for i = familyIdx
     importanceTH = 1.5*mean(currTable{:,3},'omitnan');
     conservationTH = max(currTable{:,1})*0.5;
 
-
-
     colorMap = AAtype(colorMap);
 %     colorMap(:, currTable.weights>=importanceTH) = colorMap(:, currTable.weights>=importanceTH)+5;
     colorMap(:,~(currTable.conservation>=conservationTH| currTable.weights>=importanceTH)) = 6;
@@ -127,21 +125,18 @@ for i = familyIdx
                         axis tight
                  end
              end
-
     end
 end
 
 
 
-%% histogram sumProm corr all samples and repeats
+%% Figure 4-figure supplement 1A: histogram sumProm corr all samples vs repeats
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 swapNames = allSamples(contains(allSamples, '_DBD')& ~contains(allSamples,'Rlm1'));
 [corrMat, idxVec, fullMat, idxRep] = getRepeatsCorr(swapNames, 'dataType','sumProm');
 [~, firstOcc] = unique(idxRep,'stable');
 redFullMat = fullMat(:, firstOcc);
-
 allSamplesCorr = 1-squareform(1-corr(redFullMat, 'rows','pairwise'));
-
 
 for i = 1:numel(swapNames)
     repeatsCorr{i} = 1-squareform(1-corr(redFullMat(:,idxVec(firstOcc)==i),'rows','pairwise'));
@@ -168,8 +163,7 @@ ylabel('Probability', 'FontSize',18);
 set(gca, 'FontSize',18, 'TickLength',[0 0])
 xlim([-0.1 1])
 
-
-%% small corr matrix for each pair 
+%% Figure 4-figure supplement 1C: binding signal corr matrix for each pair, including repeats 
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 swapNames = allSamples(contains(allSamples, '_DBD')& ~contains(allSamples,{'Rlm1'}));
 goodPos = createIntBasesForMotif();
@@ -198,7 +192,6 @@ for i = swapPairsIdx'
     nRepeats = accumarray(idxVec, repIdx, [], @(x)numel(unique(x(~isnan(x)))));
     yLabels = strcat(strrep(intStrains,'_',' ')', ' (',num2str(nRepeats), ')');
     yLabels = strrep(yLabels, ' DBD', '_{DBD}');
-    
     set(gca, 'YTick', tickPos, 'YTicklabel', yLabels,'XTick',[], 'TickLength',[0 0])
     hold on
     plot(repmat(borders',2,1), repmat(ylim',1, numel(borders)), 'k')
@@ -207,8 +200,7 @@ for i = swapPairsIdx'
     colormap(gca, colMap)
     %cbr = colorbar()
     caxis([0.4 1])
-    c=c+1;
-    
+    c=c+1; 
 end
 
 axes('Position', [xPos(c-1)+W+0.01, yPos(c-1), 0.02, H])
@@ -221,7 +213,7 @@ ylabel(cbr, 'Correlation','FontSize',15)
 
 
 
-%% protein scheme with DBD annotations
+%% Figure 4-figure supplement 1B: protein scheme with DBD annotations
 load('DBDdefForSwapping.mat')
 exampleStrains = {'Gis1','Rph1';'Dot6','Tod6'; 'Yrr1','Pdr8'}%'Fkh1', 'Fkh2'};
 
@@ -236,7 +228,6 @@ ax(2) = axes('Position', [0.185 0.1 0.1 0.23],'XLim',  [0 maxL+50]);
 ax(3) = axes('Position', [0.32 0.1 0.1 0.23],'XLim',  [0 maxL+50]);
 DBDcol = [[207 213 232]; [235 210 208]]/255;
 DBDtextCol = brighten(DBDcol,-0.8);
-
 c=1;
 yShift = [-0.2 0.2];
 for i = swapIdx'
@@ -262,8 +253,7 @@ for i = swapIdx'
                 %'fontSize',12, 'HorizontalAlignment','center','VerticalAlignment','middle','FontWeight','bold')
         end
         z = z+1;
-    end
-    
+    end  
     c=c+1;
     axis off
 end
