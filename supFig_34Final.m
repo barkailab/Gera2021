@@ -1,4 +1,4 @@
-%% Figure 3-figure supplement 1 and Figure 4-figure supplement 1B
+%% Figure 3-figure supplement 1 and Figure 4-figure supplement 1
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 load('promCorrSort.mat')
