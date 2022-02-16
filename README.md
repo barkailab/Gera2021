@@ -1,9 +1,10 @@
 # Gera2021
 This repository contains all scripts necessary to reproduce the figures and supplementary figures of Gera et al. 2022:
 "Evolution of binding preferences among whole-genome duplicated transcription factors".
-The matlab version used to run the scripts was 2021 a and b. In addition to the scripts and functions in this repository.
-Mat files containing the processed sequencing data are available on dryad (), and should be contained in the main folder of this repository when running the scripts.
-GithubDesc contains a list and short description of all files (scripts from GitHub and data files from dryad) comprising this repository.
+
+The matlab version used to run the scripts was 2021 a and b.
+In addition to the scripts and functions in this repository, Mat files containing the processed sequencing data are available on dryad (), and should be contained in the main folder of this repository when running the scripts.
+GithubDesc file contains a list and short description of all files (scripts from GitHub and data files from dryad) comprising this repository.
 
 The main seuencing data can be divided into 3 types: 
 - genome-wide profiles (norm): the normalised read densities along all S cerevisiae bases (~12 mio) - mean for all strains, indidividual repeats for wild-type strains
