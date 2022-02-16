@@ -1,6 +1,6 @@
-%% supplementary Fig5
+%% Figure 8—figure supplement 1
 clearvars -except checWTdelLactisSwap
-%load('/home/labs/barkailab/tamarge/Master/mat Files/checWTdelLactisSwap.mat')
+load('checWTdelLactisSwap.mat')
 allDomain = readtable('/home/labs/barkailab/felixj/proteinStruct/allDomainsAdj.txt');
 intDomains = {'Zn_clus','zf-C2H2','Forkhead','KilA-N','bZIP_1','Vhr1','Homeodomain','Myb_DNA-binding','SRF-TF',...
     'AFT','GATA','Copper-fist','HSF_DNA-bind','zf-MIZ','HMG_box','TIG','zf-BED'};
@@ -9,16 +9,15 @@ KlacDBDs = allDBD(contains(allDBD.queryName,'Klac'),:);
 ScerDBDs = allDBD(contains(allDBD.queryName,'Scer'),:);
 ScerDBDs = ScerDBDs(ScerDBDs.score_1>0,:);
 load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/promoterOL.mat','perOverlap','totalOL')
-GP=load('/home/labs/barkailab/felixj/Documents/MATLAB/scripts/gene/group_imp.mat')
-load('/home/labs/barkailab/divyakr/matlab/FinalForThesis/medianTemps/promoterLengthsORF.mat')
-load('promoterIDXvec.mat');
-h3smooth=load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Naama/H3CC_henikoff.mat');
-h3smooth=conv(mean(h3smooth.p_all,2),normpdf([-50:50]',0,25),'same');
+GP=load('group_imp.mat')
 load('promoterLengthsORF.mat')
+load('promoterIDXvec.mat');
+h3smooth=load('H3CC_henikoff.mat');
+h3smooth=conv(mean(h3smooth.p_all,2),normpdf([-50:50]',0,25),'same');
 clearvars -except summaryTable ScerDBDs KlacDBDs checWTdelLactisSwap perOverlap totalOL GP promoterIDXvec h3smooth promoterLengthsORF
 
 
-%% Hms2 Skn7, Ecm22 + Upc2 Ver4 - with individual rpeats
+%% Figure 8—figure supplement 1A,B: Hms2/Skn7, Ecm22/Upc2
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
 B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
 B62(22,:) = -8;
@@ -44,7 +43,6 @@ patternLoc = [-430, -543;-482,-849];
 intoGene = 100;
 promoterLengthPlot = 900;
 promoterLengthPlotVec = repmat(promoterLengthPlot,6701,1);
-
 
 xspacer = 0.005;
 yspacer = 0.04;
@@ -73,7 +71,6 @@ cMapMotifs = cMapMotifs([1:4],:);
 cMapMotifs(1,:) = [1,1,1];
 %cMapMotifs2 = brighten(cbrewer2('PuRd'),-0.4);
 cMapMotifs2 = brighten(brewermap(256,'PuRd'),-0.4);
-
 cMapMotifs2(1,:) = [1,1,1];
 
 %cMapLogChange = flipud(cbrewer2('RdBu'));
@@ -153,8 +150,7 @@ for tf = 1:size(zc,1)
     %     text(0.1, 0.5, 'Disorder', 'Rotation',270, 'HorizontalAlignment', 'center', 'fontSize',11)
     %     text(0, 0.5, 'tendency', 'Rotation',270, 'HorizontalAlignment', 'center', 'fontSize',11)
     %     axis off
-    
-       
+     
     % Top targets: pattern occurences +zscore mat + log2 fold change
     clear patternCorrMat
     k=7;
@@ -178,8 +174,6 @@ for tf = 1:size(zc,1)
     %[ui, uj] = find(tril(perOverlap(uTargetIdx,uTargetIdx)>0.2));
     %uTargetIdx(uj) = [];
  
-    
-    
     % pattern:
     clear nPatternInPromoter sumSignalPattern
     for p = 1:numel(pattern)
@@ -218,8 +212,8 @@ for tf = 1:size(zc,1)
             forProm(g).intPos{p}=GP.chrIdx(GP.gene_infoR64.position(uTargetIdx(g),1))+intPromPos;
         end
     end
-    % zscore:
     
+    % zscore:
     intStrains = intStrains(~contains(intStrains,'_d'));
     kLacIdx=find(contains(allSamples,intStrains)&endsWith(allSamples,'lactis'));
     if numel(kLacIdx)
@@ -275,8 +269,6 @@ for tf = 1:size(zc,1)
     [~,idx] = ismember(TargetsSortForFig5.([zc{tf,1},'_',zc{tf,2}]), uTargetIdx);
     idx(idx==0) = [];
     
-    
-    
     axes('Position', [xPos(1), yPos(tf), Wsignal, Hsignal])
     imagesc(zScoreSelectedTargets(idx,:))
     hold on
@@ -311,9 +303,7 @@ for tf = 1:size(zc,1)
     hold on
     plot(repmat(xlim',1,numel(idx)-1),repmat(1.5:numel(idx),2,1),'k-')
     plot(numel(temp{1}{1})+[0.5;0.5],ylim,'k-')
-
     %plotgrid(sumSignalPatternPlot)
-    
     set(gca,'YTick',[],'YtickLabels',uTargetIdx(idx),  'XTick', [1:2], 'XTickLabel', {'mA ', 'mB'} ,'fontSize',11,'TickLength',[0 0]);
     colormap(gca,cMapMotifs2(1:size(cMapMotifs2,1)/2, :))
     caxis([0 0.5])
@@ -321,8 +311,7 @@ for tf = 1:size(zc,1)
         text(1.5,-3,'Motif', 'fontSize',12, 'HorizontalAlignment', 'center')
         text(1.5,-1,'score', 'fontSize',12, 'HorizontalAlignment', 'center')
     end
-    
-    
+   
     axes('Position', [xPos(1)+2*(xspacer+Wsignal), yPos(tf), Wsignal, Hsignal])
     imagesc(logChangeSelectedTargets(find(all(logChangeSelectedTargets,2)),idx)')
     plotgrid(logChangeSelectedTargets(find(all(logChangeSelectedTargets,2)),idx)')
@@ -338,9 +327,8 @@ for tf = 1:size(zc,1)
             text(1.5,-1,'(DeltaParalog/wt)', 'fontSize',12, 'HorizontalAlignment', 'center')
     end   
     
-  
     
-%     % signal on example promoters
+% signal on example promoters
     intStrains = {TF1,m1,TF2,m2};
     intStrains = intStrains(ismember(intStrains,allSamples));
     for g = 1: length(targetList)
@@ -422,7 +410,6 @@ for tf = 1:size(zc,1)
                         'LineStyle','none', 'FaceAlpha', 0.3)
                 end
             end
-            
             if g==1
                 %set(gca, 'YTick', [1:numel(labelSamples)], 'YTickLabel', labelSamples(end:-1:1), 'fontSize',12, 'XTick', [-800:200:-400, TssLoc,100], 'XTickLabel', {'-800','-600','-400','TSS', '100'})
                 set(gca, 'YTick', [1:numel(labelSamples)+1], 'YTickLabel', {'NucOcc', labelsSignal{numel(labelSamples):-1:1}},'XTick',[patternLoc(tf,g)+[-45 45]],'XTickLabel',[], 'fontSize',11)
@@ -431,10 +418,8 @@ for tf = 1:size(zc,1)
             end
             text(patternLoc(tf,g)+[-45 45], [1.5,1.5], sprintfc('%d', patternLoc(tf,g)+[-45 45]'), 'fontSize', 8, 'HorizontalAlignment', 'center', 'VerticalAlignment','top')
             box on
-
         end
     end
-    
 end
 save_gf(gcf,sprintf('IndRepeats_Matrix_Sup5'),'type',{'svg'},'paper','tamar21')
 
@@ -448,7 +433,6 @@ axis off
 ylabel(cbr,'z-score', 'fontSize',10)
 set(cbr, 'Ticks', [0.1+min(caxis),max(caxis)-1] , 'TickLabels', caxis)
 
-
 axes('Position', [xPos(1)+xspacer+Wsignal, yPos(2)-yspacer-0.01, Wsignal, 0.02])
 caxis([0 0.5])
 colormap(gca,cMapMotifs2(1:size(cMapMotifs2,1)/2,:))
@@ -457,7 +441,6 @@ cbr.AxisLocation = 'out'
 axis off
 ylabel(cbr,'motif signal', 'fontSize',10)
 set(cbr, 'Ticks', [min(caxis)+0.02,max(caxis)-0.02] , 'TickLabels', {'0', '50%'},'TickLength',[0 0])
-
 
 axes('Position', [xPos(1)+2*(xspacer+Wsignal), yPos(2)-yspacer-0.01, Wsignal, 0.02])
 caxis([-2 2])
