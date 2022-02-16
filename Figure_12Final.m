@@ -1,4 +1,5 @@
-%% Figure 1 - Final!!
+%% Figures 1 and 2
+%%
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
 h3cc=load('H3CC_henikoff.mat');
@@ -7,10 +8,11 @@ load('promoterLengthsORF.mat')
 load('promoterIDXvec.mat');
 load('SC_genome.mat')
 load('allZscoreMat.mat', 'allSamples', 'allZscoreMat','sumPromMat')
- load('promCorrSort.mat')
- load('checWTdelLactisSwap.mat')
- GP=load('group_imp.mat');
-%% histograms
+load('promCorrSort.mat')
+load('checWTdelLactisSwap.mat')
+GP=load('group_imp.mat');
+
+%% Figure 2 - histograms
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
 groups = fieldnames(promCorrSort);
 examplePairs = {'Met31', 'Met32'; 'Gzf3','Dal80';'Ace2','Swi5'};
@@ -84,8 +86,8 @@ for g =  1: length(groupsIdx)
     end
 end
 
-%% Zscores and barplot- bar colored by conservation group (strong, mid, weak)
-% deviding into groups - ZF, zinc clusters+bZIP, other families, special cases
+%% Figure 2 - Zscores and barplot (bar colored by conservation group: strong, mid, weak)
+% dividing into groups - ZF, zinc clusters+bZIP, other families, special cases
 
 % load('corrBetweenRepeatsWTs.mat')
 % for i = 1:size(summaryTable,1)
@@ -203,7 +205,7 @@ for g =  1: length(groupsIdx)
 end
 
 
-%% NEW - signal on promoter example + sumProm scatter
+%% Figure 1D - signal on promoter examples and sumProm scatter
 colMotifs = lines(6);
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
 examplePairs = {'Met31', 'Met32'; 'Gzf3','Dal80'; 'Ace2','Swi5'};
@@ -280,7 +282,6 @@ for i = 1:size(examplePairs,1)
                 text(min(xlim), 0.5, ['{\itin-vitro} motif: ', motifList{i}],'Color', colMotifs(1,:),'VerticalAlignment','top','fontSize',10)
             end
     end
-    
   
     %scatter
     axes('Position', [xPos(i) yPos(i)-Hsignal-2*yspacer-Hscatter-0.01 Wsignal Hscatter])
@@ -310,7 +311,8 @@ for i = 1:size(examplePairs,1)
     xlim([0 yLim])
 end
 
-%% network - calculating parameters
+%% Figure 1E - Auto and cross promoter binding 
+% calculating parameter
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
 WTs = geneName;
 [~,WTsIdx] = ismember(geneName, allSamples);
@@ -354,7 +356,7 @@ for tf = 1:2:numel(WTsOrdered)
     iInputs((tf+1)/2,:) = sum(TFtargetsMatOrdered([tf,tf+1],:),2)';
 end
 
-%% plot networks
+%% plot circuits
 [matifsOrdered,imageOrder] = sort(motifType);
 WTsCorr = summaryTable.sumPromCorr;
 r = [0.81,0.4];
