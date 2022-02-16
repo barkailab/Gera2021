@@ -1,4 +1,4 @@
-%% supplementary Fig4
+%% Figure 6—figure supplement 1 and Figure 7—figure supplement 1
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -10,13 +10,12 @@ load('./treeFiles.mat');
 load('./paraSeqs.mat');
 load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/paraSeqs.mat');
 
-%% histogram
+%% Figure 7—figure supplement 1A: histogram promoter binding signal correlations all samples vs repeats
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 lacNames = allSamples(contains(allSamples, '_lactis')& ~contains(allSamples,{'Sut1','Rsf2','Vhr1','Rph1','Ixr1','Nhp6B','Nfi1'}));
 [corrMat, idxVec, fullMat, idxRep] = getRepeatsCorr(lacNames, 'dataType','sumProm');
 [~, firstOcc] = unique(idxRep,'stable');
 redFullMat = fullMat(:, firstOcc);
-
 allSamplesCorr = 1-squareform(1-corr(redFullMat, 'rows','pairwise'));
 
 clear repeatsCorr
@@ -44,10 +43,8 @@ set(gca, 'FontSize',18, 'TickLength',[0 0])
 xlim([-0.1 1])
 
 
-
-
-%% all protein alignment with lactis and z.rouxii GAPS REMOVED - plot trees & alignments
-% scoring lactis sequnce by multiple alignment sequence with ancestors 
+%% Figure 6—figure supplement 1B: all protein sequence alignment with K.lactis and Z.rouxii - plot trees & alignments
+% scoring lactis sequnce by multiple alignment sequence with ancestors consensus 
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
 B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
 B62(22,:) = -8;
@@ -99,7 +96,7 @@ for a = 1:numel(ancestorMSA)
     end
 end
 
-% plot  trees + alignments
+% plot trees + alignments
 DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 examplePairs = [summaryTable.p1,summaryTable.p2];
@@ -205,8 +202,6 @@ figure('Units','normalized','Position', [0 0 0.5 1])
         caxis([-8.5 7]);
         box off;
         
-        
-        
         % lactis - alignment
         axes('Position', [xPos(i) yPos(i)+Halign*2+0.005 Walign Halign])
         if isfield(eval(MSAanc), upper(TF1))
@@ -251,7 +246,7 @@ ylabel(cbr, 'Alignment score', 'fontSize',15)
 axis off
 
 
-%% scatters mutants against the lactis and corr matrix (sumProm,motifs)
+%% Figure 7—figure supplement 1B: scatters deletion mutants against K.lactis and corr matrix (sumProm,motifs)
 DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
@@ -290,7 +285,6 @@ xPos = repmat([0.05,0.32,0.59],6,1);
 Wscatter = 0.06;
 Hscatter = Wscatter*1.8;
 yPos = repmat([0.85:-(Hscatter+0.05):0.9-(Hscatter+0.05)*6]',1,3);
-
 Halign = (Htree-yspacer/5)/3;
 
 figure('Units','normalized','Position', [0 0 0.5 1],'color','w')
@@ -314,8 +308,7 @@ for i = 1:size(examplePairs,1)
       m2 = [TF2,'_d',upper(TF1)];
       if ~any(strcmp(allSamples, m2))
           m2 = TF2;
-      end
-    
+      end 
     lac = allSamples{ismember(allSamples, [TF1,'_lactis']) | ismember(allSamples, [TF2,'_lactis'])};
     zscoreMat = nan(6701,3);
     zscoreMat(:,1) =  nanZscore(checWTdelLactisSwap.sumProm.(m1))';
@@ -354,24 +347,19 @@ for i = 1:size(examplePairs,1)
     oldLog=~neoLog&~nonLog;
     maxX = max(checWTdelLactisSwap.sumProm.(m2));
     maxY = max(checWTdelLactisSwap.sumProm.(lac));
-
     scatter(checWTdelLactisSwap.sumProm.(m2)(nonLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(nonLog)/maxY,20, brighten(scatterCol,0.6), 'filled', 'MarkerFaceAlpha',0.5)
     hold on
     scatter(checWTdelLactisSwap.sumProm.(m2)(oldLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(oldLog)/maxY,20, scatterCol, 'filled','MarkerEdgeColor', markerCol)
     scatter(checWTdelLactisSwap.sumProm.(m2)(neoLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(neoLog)/maxY,20, neoCol, 'filled','MarkerEdgeColor', markerCol)
-    
     xlabel(strrep(m2,'_d', ' \Delta'), 'fontSize',10)
     yticks([])
     ylim(1.2*ylim);
     Fneo = 100*sum(neoLog)/sum((zscoreMat(:,2) > min(quantile(zscoreMat(:,2), quantileTH), zscoreTH)));
        crValue = corr(checWTdelLactisSwap.sumProm.(m2), checWTdelLactisSwap.sumProm.(lac),'rows','pairwise');
     text(0.05, 1.2, ...
-        sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',10,'VerticalAlignment','top', 'HorizontalAlignment', 'left')
-    
+        sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',10,'VerticalAlignment','top', 'HorizontalAlignment', 'left')  
     plot([0 1], absThLac.*[1 1]/maxY,'--','Color',thCol)
     plot(absThM2.*[1 1]/maxX, [0 1],'--','Color',thCol)
- 
-    
       
     % corr matrix
     axes('Position', [xPos(i)+2*(Wscatter)+0.05 yPos(i) Wscatter Hscatter])
@@ -429,18 +417,4 @@ cbr = colorbar('Location','southoutside')
 axis off
 set(cbr,'Ticks', [0:0.2:1], 'fontSize',12)
 ylabel(cbr, 'Correlation', 'fontSize',15)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
