@@ -1,13 +1,14 @@
-%% Figure 2 - Final!
+%% Figures 3 and 4
 clearvars -except checWTdelLactisSwap
- load('summaryTable.mat')
- load('SC_genome.mat')
+load('summaryTable.mat')
+load('SC_genome.mat')
 SC_genomeCat = upper(cat(2,SC_genome.Sequence));
 if ~exist('checWTdelLactisSwap','var')
     load('checWTdelLactisSwap.mat')
 end
 % load('goodAllPWM.mat')
-%% ploting horizontal bar plot of AA changes - fraction
+
+%% Figure 3B - horizontal bar plots of AA changes 
 summaryTable=summaryTable([1:10,21:30,17:20,11:16],:)
 YL = summaryTable.label;
 PairsWithNoSR = {'Spt23','Smp1','Vhr1'};
@@ -19,7 +20,7 @@ typeCol =  [brighten(baseColor, 0.2); [194 194 184]/255; [255 255 204]/255; 1 1 
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y', '-'};
 typeCol = brighten(typeCol , 0.3);
 clearvars changeTable
- % calcualte fractions
+% calcualte fractions
 allPsiFiles=dir('./ScerDBD/*.psi')
 for i=1:numel(allPsiFiles)
     try
@@ -129,7 +130,8 @@ errorbar(barPos-0.2,meanCrProm,stdProm,'vertical','LineStyle','none','Color','k'
 errorbar(barPos+0.2,merCorr,stdMer,'vertical','LineStyle','none','Color','k')
 %save_gf(gcf,sprintf('horBars_2A'),'type',{'svg'},'paper','tamar21','size',[])
 
-%% DBD barcode examples + WTs scatter+ signal arround inVitro motif (HeatMap)- expanded
+
+%% Figure 3A - DBD barcode examples, WTs scatters, signal arround inVitro motif (HeatMap)
 exampleStrains = {'Gis1','Rph1';'Dot6','Tod6'; 'Yrr1','Pdr8'};
 intPsiFiles = {'zf-C2H2.psi';  'TD6.psi'; 'Znclus.psi'}%'Forkhead.psi'};
 familyNameTitle = {'C2H2 Zinc finger', 'SANT/myb', 'Zinc cluster'};
@@ -168,13 +170,10 @@ Hscatter = Wbarcode*1.25;
 yPos = [0.95:-(Hbarcode+2*spacer+Hscatter+0.04):0.05] ;
 Wscatter = Hscatter/2;
 
-
-
 for i = [1,2,3]%: size(exampleStrains,1)
     figure('Units','normalized','Position', [0.0523 0.3602 0.3386 0.4037], 'color','w')
     % barcode
     DBDalign = multialignread(['/home/labs/barkailab/felixj/SimilarityRegression-master/Example/ScerDBD/',intPsiFiles{i}]);
-        
     [~, sortPos] = ismember(extractBetween(extractfield(DBDalign, 'Header'),'_','_'), upper(exampleStrains(i,:)));
     DBDalign(sortPos == 0) = [];
     [~,sortPos] = sort(sortPos(sortPos>0));
@@ -314,27 +313,10 @@ for i = [1,2,3]%: size(exampleStrains,1)
 
     title('7mer binding', 'fontSize',12, 'FontWeight','normal')
     title(sprintf('%.2f',corr(motifs.score(:,1), motifs.score(:,2))))
-% seqLogo
-% tempFig = figure('Units','normalized','Position',[0 0 0.5 1])
-% clear imMat
-% for j = 1: 2
-%     hold off
-%     mySeqLogo(goodAllPWM.(exampleStrains{i,j}));
-%     imMat{j} = getframe(gca);
-%     hold off
-% end
-% close(tempFig)
-% ax = axes('Position', [xPos+Wscatter+spacer, yPos(i)-spacer-Hscatter+(Hscatter*0.45)/2, Wbarcode-Wscatter-spacer  Hscatter*0.45])
-% hold off
-% for j =1:length(imMat)
-%     image(imMat{j}.cdata  , 'YData', [-0.45  0.45]+j, 'XData', [0.5 7.5])
-%     hold on
-% end
-% ylim([.5 length(imMat)+.5])
-% set(gca, 'YTick', [1:length(imMat)], 'YTickLabel', [], 'XTick', [1:7])
-%save_gf(gcf,sprintf('%s_2B',exampleStrains{i,1}),'type',{'svg'},'paper','tamar21')
 end
-%% corrMatrix
+
+
+%% Figure 4B - binding signal corrMatrix
 exampleStrains = {'Gis1','Rph1';'Dot6','Tod6'; 'Yrr1','Pdr8'}%'Fkh1', 'Fkh2'};
 intBases = createIntBasesForMotif();
 colMap = flipud(bone);
@@ -390,7 +372,7 @@ saveas(gcf, 'Fig2corrMatExamples.svg')
 
 
 
-%%  swapping summerizing scatter - Sum Prom Ver2. with ErrorBars
+%%  Figure 4C- DBD-swapping summary scatter 
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 swapSamples = allSamples(contains(allSamples, 'DBD') & ~contains(allSamples, 'Rlm1'));
 exampleStrains = {'Gis1','Rph1';'Dot6','Tod6'; 'Yrr1','Pdr8'}%'Fkh1', 'Fkh2'};
