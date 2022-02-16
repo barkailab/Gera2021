@@ -1,4 +1,4 @@
-%% Figure 5 - Final!!!
+%% Figure 8 
 clearvars -except checWTdelLactisSwap
 load('paraSeqs.mat')
 load('summaryTable.mat')
@@ -40,7 +40,7 @@ perOverlap(1:6702:end) = nan;
 totalOL=(sign(promMidVec-promMidVec')+sign(promStartPos-promStartPos'))==0;
 totalOL(1:6702:end)=0;
 
-%% Ver3 for Revision
+%% Figure 8A
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
 B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
 B62(22,:) = -8;
@@ -51,38 +51,17 @@ DBDboxCol = [0 230 230]/255;
 
 % CCpredictionsWJpred = load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/CCpredictionsWJpred.mat')
 % load('iupred2.mat')
-load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/paraSeqs.mat');
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 zc = {'Tbs1', 'Hal9';'Oaf1','Pip2';'Pdr1','Pdr3'; 'Yrr1','Pdr8'}%; 'Skn7','Hms2'};
 TargetsSortForFig5 = readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
-%targets = {'YCR102C','MGA1','TPO1' ; 'ACS1','EEB1' ''; 'RPN4','','RSB1'; 'SNQ2','','SAM1'};
-%targets = { 'YCR102C','TPO1','HXT6' ; 'ACS1','EEB1' 'INO1'; 'RPN4','RSB1','PDR3'; 'PLB1','AZR1','SAM1'}%; 'CCW12','YKL044W','PHD1'};
 targets = { 'YCR102C','TPO1' ; 'ACS1','EEB1'; 'RPN4','PDR3'; 'SNQ2','RSB1'}
 patternLoc = [-310, -612; -419, -164; -438, -219; -516,-811];
-
-% patternsColl{1} =  {'CGG.TCCG|CGGA.CCG',  'CCG...CGG', 'CGG...CGG|CCG...CCG'};
-% patternsColl{2} = {'CGG.{2,5}CGG|CCG.{2,5}CCG', 'CGG.{15,16}CCG'};
-% patternsColl{3} = {'TCCGTGG|CCACGGA','TCCGCGG[AG]|[TC]CCGCGGA'};
-% patternsColl{4} = {'CCG.{1,4}[AT]A[AT][AT].CCA|TGG.[AT][AT]T[AT].{1,4}CGG',...
-%     'CCG.{2}[AT]A[AT][AT][AT].{3}[TC]GG|CC[AG].{3}[AT][AT][AT]T[AT].{2}CGG',...
-%     'CCG.{1,4}[AT][AT][AT].{2,3}CCG|CGG.{2,3}[AT][AT][AT].{1,4}CGG',...
-%     '[TC]CC[GT]CGG[AC]|[GT]CCG[CA]GG[GA]'};
-
-% patternsColl{1} =  {'CGG.TCCG|CGGA.CCG',  'C[GC]G...CGG|CCG...C[GC]G'};
-% patternsColl{2} = {'CGG.{2,5}CGG|CCG.{2,5}CCG', 'CGG.{15,16}CCG'};
-% patternsColl{3} = {'TCCGTGG|CCACGGA','TCCGCGG[AG]|[TC]CCGCGGA'};
-% patternsColl{4} = {'CCG.{1,4}[AT][AT][AT].{2,5}CC[AG]|[CT]GG.{2,5}[AT][AT][AT].{1,4}CGG',...
-%     '[TC]CC[GT]CGG[AC]|[GT]CCG[CA]GG[GA]'};
 
 patternsColl{1} =  {'CGG.TCCG|CGGA.CCG',  'C[GC]G...CGG|CCG...C[GC]G|CGG..CGG|CCG..CCG'};
 patternsColl{2} = {'CGG.{2,5}CGG|CCG.{2,5}CCG', 'CGG.{15,16}CCG'};
 patternsColl{3} = {'TCCGTGG|CCACGGA','TCCGCGG[AG]|[TC]CCGCGGA'};
 patternsColl{4} = {'CCG.{6,11}CC[AG]|[TC]GG.{6,11}CGG',...
     '[TC]CCGCGG[AC]|[GT]CCGCGG[GA]'};
-
-% patternsColl{4} = {'CCG.{6,11}CC[AG]|[CT]GG.{6,11}CGG',...
-%     '[TC]CC[GT]CGG[AC]|[GT]CCG[CA]GG[GA]'};
-%patternsColl{5} = {'GGCCA|TGGCC','GGCCG|CGGCC' };
 
 maxL = max(summaryTable.proteinLength(contains(summaryTable.p1, zc),:),[],'all');
 intoGene = 100;
@@ -117,9 +96,7 @@ cMapMotifs = cMapMotifs([1:4],:);
 cMapMotifs(1,:) = [1,1,1];
 %cMapMotifs2 = brighten(cbrewer2('PuRd'),-0.4);
 cMapMotifs2 = brighten(brewermap(256,'PuRd'),-0.4);
-
 cMapMotifs2(1,:) = [1,1,1];
-
 %cMapLogChange = flipud(cbrewer2('RdBu'));
 cMapLogChange = flipud(brewermap(256,'RdBu'));
 %cMapClusters = cbrewer2('Set3',4);
@@ -195,8 +172,7 @@ for tf = 1:size(zc,1)
     %     text(0.1, 0.5, 'Disorder', 'Rotation',270, 'HorizontalAlignment', 'center', 'fontSize',11)
     %     text(0, 0.5, 'tendency', 'Rotation',270, 'HorizontalAlignment', 'center', 'fontSize',11)
     %     axis off
-    
-       
+           
     % Top targets: pattern occurences +zscore mat + log2 fold change
     clear patternCorrMat
     k=7;
@@ -219,9 +195,7 @@ for tf = 1:size(zc,1)
     uTargetIdx=uTargetIdx(keepIdx);
     %[ui, uj] = find(tril(perOverlap(uTargetIdx,uTargetIdx)>0.2));
     %uTargetIdx(uj) = [];
- 
-    
-    
+   
     % pattern:
     clear nPatternInPromoter sumSignalPattern
     for p = 1:numel(pattern)
@@ -260,8 +234,8 @@ for tf = 1:size(zc,1)
             forProm(g).intPos{p}=GP.chrIdx(GP.gene_infoR64.position(uTargetIdx(g),1))+intPromPos;
         end
     end
-    % zscore:
     
+    % zscore:
     intStrains = intStrains(~contains(intStrains,'_d'));
     kLacIdx=find(contains(allSamples,intStrains)&endsWith(allSamples,'lactis'));
     if numel(kLacIdx)
@@ -315,9 +289,7 @@ for tf = 1:size(zc,1)
     
     % cluster by targets
     [~,idx] = ismember(TargetsSortForFig5.([zc{tf,1},'_',zc{tf,2}]), uTargetIdx);
-    idx(idx==0) = [];
-    
-    
+    idx(idx==0) = []; 
     
     axes('Position', [xPos(1), yPos(tf), Wsignal, Hsignal])
     imagesc(zScoreSelectedTargets(idx,:))
@@ -333,7 +305,6 @@ for tf = 1:size(zc,1)
         text(1.5,-1, '(wt)', 'fontSize',12, 'HorizontalAlignment', 'center')
     end
     xlim([.5 size(zScoreSelectedTargets,2)+.5])
-    
     axes('Position', [xPos(1)-0.01, yPos(tf), 0.01, Hsignal])
     targetsPosPlot = find(contains(GP.gene_infoR64.name(uTargetIdx(idx)), targetList));
     scatter([0.5 0.5], targetsPosPlot, 15,cMapClusters, 'filled')
@@ -364,7 +335,6 @@ for tf = 1:size(zc,1)
         text(1.5,-1,'score', 'fontSize',12, 'HorizontalAlignment', 'center')
     end
     
-    
     axes('Position', [xPos(1)+2*(xspacer+Wsignal), yPos(tf), Wsignal, Hsignal])
     imagesc(logChangeSelectedTargets(find(all(logChangeSelectedTargets,2)),idx)')
     plotgrid(logChangeSelectedTargets(find(all(logChangeSelectedTargets,2)),idx)')
@@ -378,11 +348,9 @@ for tf = 1:size(zc,1)
     if tf==1
         text(1.5,-3,'Binding change', 'fontSize',12, 'HorizontalAlignment', 'center')
             text(1.5,-1,'(DeltaParalog/wt)', 'fontSize',12, 'HorizontalAlignment', 'center')
-    end   
-    
+    end    
   
-    
-%     % signal on example promoters
+% signal on example promoters
     intStrains = {TF1,m1,TF2,m2};
     intStrains = intStrains(ismember(intStrains,allSamples));
     for g = 1: length(targetList)
@@ -437,7 +405,6 @@ for tf = 1:size(zc,1)
             plot(TssLoc*[1 1] ,ylim, ':r', 'LineWidth',1.5)
             scatter(0 ,0.5,[], '>r','filled')
             text(TssLoc, 0.5, 'TSS', 'color', 'r','HorizontalAlignment','center','VerticalAlignment','top','fontSize',8);
-            
             if ~isempty(motifPatternLocSAll)
                 for p = 1:length(patternIdx)
                     %scatter(motifPatternLocSAll(p), 0.5,50, [colMotifs(patternIdx(p),:)],'filled', 'MarkerEdgeColor','k');
@@ -447,7 +414,7 @@ for tf = 1:size(zc,1)
             end
             title(sprintf('%s',target),'fontSize',9)
             box on
-            
+         
             % zoom on a single pattern
             axes('Position', [xPos(1)+5*(Wsignal+xspacer)+(g-1)*(Wpromoter+xspacer) yPos(tf) Wzoom Hzoom])
             hold on
@@ -464,7 +431,6 @@ for tf = 1:size(zc,1)
                         'LineStyle','none', 'FaceAlpha', 0.3)
                 end
             end
-            
             if g==1
                 %set(gca, 'YTick', [1:numel(labelSamples)], 'YTickLabel', labelSamples(end:-1:1), 'fontSize',12, 'XTick', [-800:200:-400, TssLoc,100], 'XTickLabel', {'-800','-600','-400','TSS', '100'})
                 set(gca, 'YTick', [1:numel(labelSamples)+1], 'YTickLabel', {'NucOcc', labelsSignal{numel(labelSamples):-1:1}},'XTick',[patternLoc(tf,g)+[-45 45]],'XTickLabel',[], 'fontSize',11)
@@ -473,14 +439,13 @@ for tf = 1:size(zc,1)
             end
             text(patternLoc(tf,g)+[-45 45], [1.5,1.5], sprintfc('%d', patternLoc(tf,g)+[-45 45]'), 'fontSize', 8, 'HorizontalAlignment', 'center', 'VerticalAlignment','top')
             box on
-
         end
     end
-    
 end
 %save_gf(gcf,sprintf('IndRepeats_Matrix_5'),'type',{'svg'},'paper','tamar21')
 
-%% Ecm22 Upc2 with alignment + new movement
+
+%% Figure 8B-D - Ecm22/Upc2 sequence alignment and WTs, deletion mutants and DBD-swap variants scatters (showing the change in binding relative to the wild-type)
 examplePairs = {'Upc2','Ecm22'};
 targets = {'ERG3','UPC2'};
 patternsColl{1} = {'TA[TA]ACGA|TCGT[TA]TA'};
@@ -490,7 +455,6 @@ promoterLengthPlotVec = repmat(promoterLengthPlot,6701,1);
 kLacNtargets = 50;
 
 colMapAlignment =brighten([1 1 1; flipud(bone)],0.6);
-%DBDboxCol = [135 48 146]/255;
 DBDboxCol = [0 230 230]/255;
 
 xspacer = 0.04;
@@ -518,10 +482,8 @@ cMapZscores = flipud(bone);
 cMapMotifs = brighten(brewermap(8,'Oranges'),-0.2); %brighten(brewermap(8,'Oranges'),-0.2);
 cMapMotifs = cMapMotifs([1:4],:);
 cMapMotifs(1,:) = [1,1,1];
-
 %lineCol = [cbrewer2('Blues',1);cMapLac(150,:)];
 %ccColMap = cbrewer2('PuBu', length(colRangeCC)); 
-
 lineCol = [brewermap(1,'Blues');cMapLac(150,:)];
 ccColMap = brewermap(length(colRangeCC),'PuBu'); 
 
@@ -540,7 +502,6 @@ for tf = 1:size(examplePairs,1)
     intStrains = intStrains(ismember(intStrains,allSamples));
     pattern = patternsColl{tf};
     
-    
      % protein scheme: DBD+ coiled coil
      paraIdx = find(contains({paraSeqs.name}, upper(examplePairs)));
      clear DBDpos proteinSeq disTenVec
@@ -552,7 +513,6 @@ for tf = 1:size(examplePairs,1)
      end
      kLacSeq=strrep(paraSeqs(paraIdx).seq{18},'*','');
      disTenVec{3} = iupred2.score{strcmp(iupred2.commonName, paraSeqs(paraIdx).commonName{18})};
-
      [~, alignment] = nwalign(proteinSeq{1}, proteinSeq{2}) ;
      paraLength = cellfun('prodofsize',[proteinSeq,kLacSeq])%[size(proteinSeq{1},2), size(proteinSeq{2},2)];
      currMaxL = max(paraLength);
@@ -565,7 +525,6 @@ for tf = 1:size(examplePairs,1)
      for j =1:2
          imageMat(j,1:sum(idxPara(j,:)~=22)) = posScore(idxPara(j,:)~=22);
      end
-     
      
      % klac alignments
      DBDposLac = [KlacDBDs.from_2(find(contains(KlacDBDs.queryName, upper(examplePairs{tf,1})))), KlacDBDs.to_2(find(contains(KlacDBDs.queryName, upper(examplePairs{tf,1}))))];
@@ -587,7 +546,6 @@ for tf = 1:size(examplePairs,1)
      for j=1:2
          imagesc(imageMat(j,1:paraLength(j)),'YData',j*imDis)
          hold on
-         
          xVec = [DBDpos{j}, DBDpos{j}([2,1]), DBDpos{j}(1)];
          yVec = j*imDis+[.5, .5, -.5, -.5, .5];
          plot(xVec, yVec, 'color', DBDboxCol, 'LineWidth',2)
@@ -595,7 +553,6 @@ for tf = 1:size(examplePairs,1)
          text(paraLength(j)+5, j*imDis+0.6, sprintf('%d aa', paraLength(j)), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', 'fontSize',11)
          plot(paraLength(j)+[.5 .5], j*imDis+[-.5, .5], 'k');
          plot(0+[.5 .5], j*imDis+[-.5, .5], 'k');
-
          plot([0.5,paraLength(j)]+0.5, j*imDis-[0.5 0.5], 'k');
          plot([0.5,paraLength(j)]+0.5, j*imDis+[0.5 0.5], 'k');         
          plot([0.5,paraLength(j)]+0.5, j*imDis.*[1 1], '--k', 'LineWidth', 0.5)
@@ -605,12 +562,10 @@ for tf = 1:size(examplePairs,1)
     imagesc(kLacMat(2,1:paraLength(3)),'YData',3*imDis)
     plot(paraLength(3)+[.5 .5], 3*imDis+[-.5, .5], 'k');
     plot(0+[.5 .5], 3*imDis+[-.5, .5], 'k');
-    
     plot([0,paraLength(3)]+0.5, 3*imDis-[0.5 0.5], 'k');
     plot([0,paraLength(3)]+0.5, 3*imDis+[0.5 0.5], 'k');
     plot([0.5,paraLength(3)]+0.5, 3*imDis.*[1 1], '--k', 'LineWidth', 0.5)
     text(paraLength(3)+5, 3*imDis+0.6, sprintf('%d aa', paraLength(3)), 'HorizontalAlignment', 'center', 'VerticalAlignment', 'top', 'fontSize',11)
-    
     text(paraLength(3)+5, 3*imDis-0.5, '1', 'HorizontalAlignment', 'left', 'fontSize',10,'VerticalAlignment','middle')
     text(paraLength(3)+5, 3*imDis+0.5, '0', 'HorizontalAlignment', 'left', 'fontSize',10,'VerticalAlignment','middle')
     xVec = DBDposLac([1,2,2,1,1]);
@@ -643,7 +598,6 @@ for tf = 1:size(examplePairs,1)
     ydataOriginal = checWTdelLactisSwap.sumProm.(TF2);
     lacIdx = find(contains(allSamples, 'lactis') & contains(allSamples, {TF1,TF2}));    
      
- 
     if isempty(lacIdx)
         colDataZ= repmat(1, 6701,1);
         colDataS= repmat(1, 6701,1);
@@ -696,9 +650,7 @@ for tf = 1:size(examplePairs,1)
     xlabel(TF1,'fontSize',12)
     ylim([0 max(countsH)])
     set(gca, 'XTick', [0:0.5:1])
-
     legend('fontSize',10)
-    
     
     % scatters with movement
     k=10;
@@ -756,7 +708,6 @@ for tf = 1:size(examplePairs,1)
             set(gca,'fontSize',10)
             currA = gca;
             set(gca, 'XTIck', [0:0.5:1], 'YTIck', [0:0.5:1])
-            
             cbr = colorbar()
             caxis([-0.5 3.5])
             set(cbr, 'Ticks', [0:3])
@@ -767,7 +718,6 @@ for tf = 1:size(examplePairs,1)
             legend([pUp,pDown], 'Location', 'southeast')
             %text(0.9*max(xlim), 0.05*max(ylim), sprintf('r = %.2f',corr(xdataNew,ydataNew,'rows','pairwise')), 'fontSize',12, 'HorizontalAlignment','center')
             title(sprintf('r = %.2f',corr(xdataNew,ydataNew,'rows','pairwise')), 'fontSize',12, 'fontWeight','normal')
-
         end
     end 
 end
