@@ -1,4 +1,4 @@
-%% Figure 6 - Final!!!
+%% Figure 9
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -13,17 +13,15 @@ if ~exist('checWTdelLactisSwap','var')
     load('checWTdelLactisSwap.mat')
 end
 GP=load('./group_imp.mat')
-%% Gis1 Rph1- Ver3. with ind repeats 
+
+
+%% Figure 9A-D
 examplePairs = {'Gis1','Rph1'};
 targets = {'GSY2','HAP5'};
 TargetsSortForFig5 = readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 
 patternsColl{1} = {'[ACG]A[AG]GGG[AT]|[AT]CCC[CT]T[CGT]','TA[GA]GGG[AT]|[AT]CCC[CT]TA'};
-
-% attempt:
-%patternsColl{1} = {'AGGGG[AT]|[AT]CCCCT','AAGGG[AT]|[AT]CCCTT'};
-
 compType = {'_d','_DBD'};
 promoterLengthPlot = 700;
 promoterLengthPlotVec = repmat(promoterLengthPlot,6701,1);
@@ -63,10 +61,8 @@ cMapLogChange = flipud(cbrewer2('RdBu')); %flipud(brewermap(256,'RdBu'));
 % cMapClusters = brighten(cMapClusters,-0.4);
 cMapMotifs2 = brighten(cbrewer2('PuRd'),-0.4);
 cMapMotifs2(1,:) = [1,1,1];
-
 intoGene = 20;
 N = 30;
-
 lineCol = [cbrewer2('Blues',1); cMapLac(150,:)] %[brewermap(1,'Blues'); cMapLac(150,:)];
 kLacNtargets = 100;
 
@@ -152,7 +148,6 @@ for tf = 1:size(examplePairs,1)
     ylim([0 max(countsH)])
     set(gca,'XTick', [0:0.5:1])
     xlabel(TF1,'fontSize',12)
-
     legend()
     
     % scatters with movement
@@ -221,14 +216,10 @@ for tf = 1:size(examplePairs,1)
 %             ylabel(labelSamples{2},'fontSize',12)
             xlabel(strrep(comp1,'_',' '),'fontSize',12)
             ylabel(strrep(comp2,'_',' '),'fontSize',12)
-
             set(gca, 'XTick', [0:0.5:1], 'YTick', [0:0.5:1])
-            
             legend(pUp,'Location','northeast')
-            
         end
     end    
-    
     
     % unqiue targets
     intStrains = {TF1,TF2,lac};
@@ -241,7 +232,6 @@ for tf = 1:size(examplePairs,1)
         uTargetIdx = unique(cat(1, idxMax{:})', 'stable');
         k=k+1;
     end
-    
     
     % pattern:
     sumSignalPattern=nan(numel(uTargetIdx),numel(pattern),2);
@@ -270,11 +260,9 @@ for tf = 1:size(examplePairs,1)
             forProm(g).intPos{p}=GP.chrIdx(GP.gene_infoR64.position(uTargetIdx(g),1))+intPromPos;
         end
     end
-    
     nPatternInPromoter = occPattern(uTargetIdx,:)';
     
     % zscore:
-    
     intStrains = intStrains(~contains(intStrains,'_d'));
     kLacIdx=find(contains(allSamples,intStrains)&endsWith(allSamples,'lactis'));
     if numel(kLacIdx)
@@ -306,7 +294,6 @@ for tf = 1:size(examplePairs,1)
     zScoreSelectedTargetsMean =  zScoresMat(uTargetIdx,:);
     clearvars zScoresMat
     
-    
     % log2 fold change
     clear normFactor logChange
     for par = 1:2
@@ -331,11 +318,9 @@ for tf = 1:size(examplePairs,1)
     % cluster by targets
     [~,idx] = ismember(TargetsSortForFig5.([examplePairs{tf,1},'_',examplePairs{tf,2}]), uTargetIdx);
     idx(idx==0) = [];
-    
-    
+   
     % imagesc Zscores
     axes('Position', [xPos yPos-1.5*yspacer-Hline Wline*3 Hline])
-    
     imagesc(zScoreSelectedTargets(idx,:))
     hold on
     plot([maxSize 2*maxSize]+[0.5;.5],ylim,'k-')
@@ -343,15 +328,12 @@ for tf = 1:size(examplePairs,1)
     caxis([0 10])
     set(gca,'YTick', [],  'XTick',[(maxSize+1)/2 maxSize+(maxSize+1)/2 maxSize*2+(maxSize/2+1)/2], 'XTickLabel', {TF1,TF2,'klac'}, 'fontSize',11, 'TickLength',[0 0]);
     colormap(gca,cMapZscores)
-    
     if tf==1
         text(1.5,-3,'Binding', 'fontSize',12, 'HorizontalAlignment', 'center')
         text(1.5,-1, '(wt)', 'fontSize',12, 'HorizontalAlignment', 'center')
     end
     xlim([.5 size(zScoreSelectedTargets,2)+.5])
     
-
-
     colormap(gca,cMapZscores)
     [~, targetIdx]=ismember(targetList,GP.gene_infoR64.nameNew)
     [~, targetPos]=ismember(targetIdx, uTargetIdx(idx))
@@ -364,7 +346,6 @@ for tf = 1:size(examplePairs,1)
     set(gca,'YDir','reverse')
     axis off
     
-
     % imagesc log2 fold change
     axes('Position', [xPos+Wline*3.5 yPos-1.5*yspacer-Hline Wline*2 Hline])
     imagesc(logChangeSelectedTargets(:,idx)')
@@ -393,7 +374,6 @@ for tf = 1:size(examplePairs,1)
     colormap(gca,cMapMotifs2)
     text(mean(xlim),-3,'Motif', 'fontSize',11, 'HorizontalAlignment', 'center')
     text(mean(xlim),-1,'score', 'fontSize',11, 'HorizontalAlignment', 'center')
-    
     
     intStrains = {TF1,m1,s1,TF2,m2,s2,lac};
     intStrains = intStrains(ismember(intStrains,allSamples));
@@ -509,7 +489,6 @@ for tf = 1:size(examplePairs,1)
             box on
         end
     end
-    
 end
 
 % colorbars:
@@ -522,7 +501,6 @@ axis off
 ylabel(cbr,'z-score', 'fontSize',10)
 set(cbr, 'Ticks', [0.1+min(caxis),max(caxis)-1] , 'TickLabels', caxis)
 
-
 axes('Position', [xPos+Wline*3.5 yPos-2.5*yspacer-Hline Wline*2 0.05])
 caxis([-2 2])
 colormap(gca,cMapLogChange)
@@ -531,7 +509,6 @@ cbr.AxisLocation = 'out'
 axis off
 ylabel(cbr,'Deltalog2', 'fontSize',10)
 set(cbr, 'Ticks', [0.5+min(caxis),0,max(caxis)-0.1] , 'TickLabels', [min(caxis),0,max(caxis)],'TickLength',[0 0])
-
 
 axes('Position', [xPos+Wline*6 yPos-2.5*yspacer-Hline Wline*2 0.05])
 caxis([0 .8])
@@ -545,7 +522,8 @@ set(cbr, 'Ticks', [0, 0.8], 'TickLabels', {'0','80%'})
 set(gcf, 'Renderer','painters')
 % saveas(gcf, 'Fig6Gis1Rph1Scatters.svg')
 
-%% sequence alignment of JmjC and DBD or Gis1 Rph1
+
+%% Figure 9E - sequence alignment of JmjC and DBD of Gis1/Rph1
 examplePairs = {'Gis1','Rph1'};
 allDomain=readtable('./allDomainsAdj.txt');
 chosenDomains = {'PF00096', 'PF02373', 'PF02375'}; % ZF, JmjC, JmjN
@@ -661,20 +639,7 @@ for z = 1:length(seqAlignPlot)
     text(675+z*25, 3, seqAlignPlot([2,1,3],z), 'Color', colMut, 'FontWeight', fWeight, 'FontName','Courier', 'HorizontalAlignment','center','VerticalAlignment','top')
 end
 text(725+(z+1)*25, 3, strcat(repmat(char(8230),3,1),num2str(alignEnd([2,1,3]))), 'Color', [.5 .5 .5], 'FontWeight', 'normal', 'FontName','Courier', 'HorizontalAlignment','center','VerticalAlignment','top')
-
-
-
 axis off
 
 %set(gcf,'Renderer', 'painters')
 % saveas(gcf, 'Fig6sequenceAlignment.svg')
-
-
-
-
-
-
-
-
-
-
