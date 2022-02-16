@@ -1,4 +1,4 @@
-%% supplementary Fig3
+%% Figure 5—figure supplement 1
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -11,10 +11,9 @@ GP=load('./group_imp.mat')
 load('./promCorrSort.mat')
 load('./paraSeqs.mat');
 
-%% ver2 - like in Fig3
+%% Figure 5—figure supplement 1B-E
 clearvars -except GP checWTdelLactisSwap
 allSamples=fieldnames(checWTdelLactisSwap.sumProm)
-load('summaryTable.mat')
 zscoreTH = 3.5;
 quantileTH = 0.99;
 Xlimit = [-4 4];
@@ -233,29 +232,3 @@ for i = [1:5, 11:15, 21:25, 6:10, 16:20, 26:30]
     end
 end
 %save_gf(gcf,sprintf('FigS3Part%d',i),'paper','tamar21','type','svg','size',[])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
