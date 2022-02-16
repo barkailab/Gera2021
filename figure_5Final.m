@@ -1,4 +1,4 @@
-%% Figure 3 - Final!!!
+%% Figure 5
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -10,7 +10,7 @@ load('SC_genome.mat')
 GP=load('./group_imp.mat')
 load('./promCorrSort.mat')
 
-%% NEW - Examples: promoter signal + scatter+ corr matrix
+%% Figure 5D - Examples: signal on idividual promoters, sumProm scatters and binding signal corr matrix
 examplePairs = {'Stp2','Stp1'; 'Pdr3', 'Pdr1'; 'Dal80', 'Gzf3'};
 targets = {'BAP3'; 'SNQ2'; 'GAP1'};
 motifList = {'ACGGC', 'CGGAA', 'GATAA'};
@@ -152,7 +152,6 @@ for i = 1:size(examplePairs,1)
     ylabel(cbr,'correlation', 'fontSize',15)
     set(cbr, 'Ticks', [0.6:0.2:1])
             
-  
     % log2 change
     axes('Position', [xPos(i) yPos-2*yspacer-Hsignal/2 Wsignal Hsignal/2])
     for tf =1:2
@@ -204,7 +203,6 @@ for i = 1:size(examplePairs,1)
     set(cbr, 'Ticks', [min(caxis), max(caxis)], 'TickLabels', {'0','0.8'}, 'TickLength', [0 0], 'FontSize',8)
     title(cbr, 'Paralogs signal', 'fontSize',10)
     axis off
-    
     
     % promoter
     target = targets{i};
@@ -260,13 +258,12 @@ for i = 1:size(examplePairs,1)
     targetGeneTss = GP.gene_infoR64.tamarTss(targetGeneidx,:);
     PromSeq = upper(findPromoterSeq(targetGeneidx, GP, promoterL,'tss','orf', 'intoGene', intoGene));
     chr = targetGenePos(1);
-    relPromoterPos =  targetGenePos(2)+[-promoterL(targetGeneidx):intoGene-1]*GP.gene_infoR64.dir(targetGeneidx);
-    
+    relPromoterPos =  targetGenePos(2)+[-promoterL(targetGeneidx):intoGene-1]*GP.gene_infoR64.dir(targetGeneidx);    
 end
 %save_gf(gcf,'Fig3Exam','paper','tamar21','type','svg','size',[])
 
 
- %% Deletions - summary plot (scatters by groups)
+ %% Figure 5C - summary plot (scatters by groups)
  groups = fieldnames(promCorrSort);
  familyNames = {'Zinc finger', 'Zinc cluster, bZIP', 'others'};
  groupsIdx = {1, [2,3], 4};
@@ -280,7 +277,6 @@ end
  figure
  for g =  1: length(groupsIdx)
      axes('Position', [-0.06+(g-1)*0.305 0.07 0.45 0.45]);
-     
      nParalogs =  sum(ismember(summaryTable.familyId, groupsIdx{g}));
      c = g;
      corrWTs = nan(nParalogs,1);
@@ -315,7 +311,6 @@ end
          t{i,1} = currF1;
          t{i,2} = currF2;
      end
-     
      hold on
      for p =1:nParalogs
          plot([corrWTs(p), corrWTs(p)], [corrM1W2(p), corrM2W1(p)], 'Color', [0.7 0.7 0.7])
@@ -324,7 +319,6 @@ end
      y1neg(y1neg==0) = nan;
      y2neg(y2neg==0) = nan;
      
-
      if length(groupsIdx{g}) > 1
               scatter([corrWTs(ZCidx);corrWTs(ZCidx)], [corrM1W2(ZCidx); corrM2W1(ZCidx)], 85, [corrM1W1(ZCidx);corrM2W2(ZCidx)],...
                   'filled', 'MarkerEdgeColor','r', 'LineWidth',1.5);
@@ -371,12 +365,11 @@ end
      title(familyNames{g}, 'FontSize',20)
  end
  set(gcf, 'Color','w');
-
 % save_gf(gcf,'/home/labs/barkailab/tamarge/Master/paperIllustrator/Rev/Fig3Sum','paper','tamar21','type','svg')
 % saveas(gcf, 'Fig3SummaryPlotWithSTD.svg')
 
 
-%% scheme explaining summary figure
+%% Figure 5A - scheme explaining summary figure
 colVec = lines(2);
 figure('Units','normalized','Position', [0 0 0.5 1])
 w = 0.13;
@@ -441,11 +434,9 @@ for i = 1:3
     hold on
     er = errorbar(-(1-yData(i*10-9:i*10)), [1:10], yErr(i*10-9:i*10), yErr(i*10-9:i*10), 'horizontal', 'lineStyle', 'none')
     er.Color = 'b';
-    
     barh([1:10], 1-xData(i*10-9:i*10), 'FaceColor', col(2,:))
     er = errorbar(1-xData(i*10-9:i*10), [1:10], xErr(i*10-9:i*10), xErr(i*10-9:i*10), 'horizontal', 'lineStyle', 'none')
     er.Color = 'b';
-   
     xlim([-0.45 0.45])
     set(gca, 'YDir','reverse', 'XTick', [-0.4:0.4:0.4], 'XTickLabel', [0.4,0,0.4], 'YTick',[], 'fontSize',10)
     ylim([0.5 10.5])
