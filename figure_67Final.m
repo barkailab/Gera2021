@@ -1,4 +1,4 @@
-%% Figure 4 - Final!!!
+%% Figures 6 and 7
 clearvars -except checWTdelLactisSwap
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -9,7 +9,7 @@ load('Abf2Ixr1.mat')
 load('./treeFiles.mat');
 load('./paraSeqs.mat');
 
-%% bar plot of paralog's distance based on nonDBD trees (values normalized to the distance of lactis)
+%% Figure 6D - bar plot of paralog's distance based on nonDBD trees (values normalized to the distance of lactis)
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
 geneName = [{'Ixr1'},{'Abf2'},geneName];
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
@@ -17,7 +17,7 @@ lacSamples = allSamples(contains(allSamples,'lactis') & ~contains(allSamples,'Su
 YL=[{'Ixr1','Abf2'};summaryTable{[1:10,21:30,17:20,11:16],{'p1','p2'}}];
 
 treeFiles = treeFiles(contains(treeFiles.name, '_non')&contains(treeFiles.name, geneName, 'IgnoreCase', true),:);
-%% 3-bars graph
+% 3-bars graph
 [~,treeIdx]=ismember(upper(YL),regexp(treeFiles.name,'.{3}\d+','match','once'))
 treeIdx=sum(treeIdx,2);
 [~,sumidx]=ismember(YL(:,1),summaryTable.p1)
@@ -43,15 +43,12 @@ end
 %resort treeFiles
 paralogsDis = abs(treeFiles.dis1(treeIdx) - treeFiles.dis2(treeIdx));
 
-
 familyNames = {'Zinc finger', 'others','bZIP', 'Zinc cluster'};
 familyDiv=[1,11.5,22,26.7]+0.75;
 axes('Position', [0.2 0.2 0.1 0.7])
 barCol = [cbrewer2('Pastel1',2) ;[1,1,1]];
 barCol(1,:) = [1  1 1]*0.7;
 barPos = [1,1.5+[1:10, 11.5:20.5, 22:25, 26.5:31.5]];
-
-
 
 % vertical bars
 close all
@@ -139,7 +136,7 @@ ax = axes('Position', [0.25 0.65+0.08/2 0.05 0.08/2])
 text(0.05, 0.5, 'Ixr1','VerticalAlignment', 'middle', 'fontSize',13, 'Color',colSpot(1,:),'FontWeight','bold', 'Rotation',0, 'HorizontalAlignment','center')
 axis off
 
-% Ixr1 scatter with lactis
+% Figure 7A - Ixr1 scatter with K. lactis
 axes('Position', [0.05 0.21 0.2 0.2*1.8])
 scatter(checWTdelLactisSwap.sumProm.Ixr1, checWTdelLactisSwap.sumProm.Ixr1_lactis, [],...
     checWTdelLactisSwap.sumProm.Ixr1_dABF2,'filled','MarkerEdgeColor','k')
@@ -159,7 +156,6 @@ set(gca, 'fontSize',15)
 text(0.02*max(xlim),0.96*max(ylim),...
     sprintf('r=%.2f',corr(checWTdelLactisSwap.sumProm.Ixr1, checWTdelLactisSwap.sumProm.Ixr1_lactis,'rows','pairwise')),...
     'FontSize',15, 'HorizontalAlignment','left');
-
 
 %% all protein alignment with lactis and z.rouxii GAPS REMOVED
 % scoring lactis sequnce by multiple alignment sequence with ancestors 
@@ -215,7 +211,7 @@ for a = 1:numel(ancestorMSA)
 end
 
 
-%% Ixr1 Abf2 tree
+%% Figure 6B - Ixr1 Abf2 tree and sequence alignment
 DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 examplePairs = {'Ixr1','Abf2'};
@@ -320,9 +316,7 @@ figure('Units','normalized','Position', [0 0 0.5 1])
         colormap(gca, colMapAlignment);
         caxis([-8.5 7]);
         box off;
-        
-        
-        
+              
         % lactis - alignment
         axes('Position', [xPos yPos(i)+Hscatter+yspacer Walign Halign])
         if isfield(eval(MSAanc), upper(TF1))
@@ -360,7 +354,7 @@ end
 set(gcf, 'color','w')
 
 
-%% Red Dots: Examples: neo, sub - sequence alignment, tree, scatters mutants against the lactis and corr matrix (sumProm,motifs) with non-targets
+%% Figures 6C and 7B - Examples: demonstrating neo/sub, sequence alignment, tree, scatters paralog deletion mutants vs K. lactis and corr matrix (sumProm,7mers)
 DBDallParas = readtable('./allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 examplePairs = {'Rph1','Gis1'; 'Vhr1','Vhr2'; 'Tda9','Rsf2'};
@@ -381,7 +375,6 @@ neoCol = [204 51 0]/255; % red
 thCol = [.3 .3 .3];
 colMapParalogsTargets = cbrewer2('BuPu');
 
-
 Walign = 0.1;
 Wtree =0.1;
 Htree = 0.05;
@@ -395,7 +388,6 @@ Halign = (Htree-yspacer/5)/3;
 zscoreTH = 3.5;
 zscoreTHL = 2.5;
 quantileTH = 1;
-
 
 figure('Units','normalized','Position', [0 0 0.5 1], 'color','w')
 for i = 1:size(examplePairs,1)
@@ -413,7 +405,6 @@ for i = 1:size(examplePairs,1)
         [~, idx] = ismember(upper(TF2), extractfield(paraSeqs,'name'));
         pSeq = paraSeqs(idx).seq([12,22]) ;
     end
-    
     if ~isempty(paraSeqs(idx).seq{18})
         ancSeq = paraSeqs(idx).seq{18};
         MSAanc = 'lactisMSAscore';
@@ -507,9 +498,7 @@ for i = 1:size(examplePairs,1)
         set(cbr, 'Ticks', [min(caxis) max(caxis)], 'TickLabels', [])
         ylabel(cbr, 'Alignment\newline     score', 'fontSize',10)
     end
-    
-    
-    
+       
     % scatter1
     axes('Position', [xPos yPos(i) Wscatter Hscatter])
     m1 = [TF1,'_d',upper(TF2)];
@@ -526,8 +515,7 @@ for i = 1:size(examplePairs,1)
     absThM1=mean(checWTdelLactisSwap.sumProm.(m1),'omitnan')+zscoreTH*std(checWTdelLactisSwap.sumProm.(m1),[],'omitnan');
     absThM2=mean(checWTdelLactisSwap.sumProm.(m2),'omitnan')+zscoreTH*std(checWTdelLactisSwap.sumProm.(m2),[],'omitnan');
     maxX = max(checWTdelLactisSwap.sumProm.(m1));
-    maxY = max(checWTdelLactisSwap.sumProm.(lac));
-    
+    maxY = max(checWTdelLactisSwap.sumProm.(lac));   
 %         scatter(checWTdelLactisSwap.sumProm.(m1)(~nonLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(~nonLog)/maxY,...
 %         20, checWTdelLactisSwap.sumProm.(m2)(~nonLog)/max(checWTdelLactisSwap.sumProm.(m2)), 'filled', 'MarkerEdgeColor', 'k')
         scatter(checWTdelLactisSwap.sumProm.(m1)(oldLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(oldLog)/maxY,...
@@ -535,7 +523,6 @@ for i = 1:size(examplePairs,1)
         hold on
         scatter(checWTdelLactisSwap.sumProm.(m1)(neoLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(neoLog)/maxY,...
         20, checWTdelLactisSwap.sumProm.(m2)(neoLog)/max(checWTdelLactisSwap.sumProm.(m2)), 'filled', 'MarkerEdgeColor', neoCol, 'LineWidth', 1)
-
         scatter(checWTdelLactisSwap.sumProm.(m1)(nonLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(nonLog)/maxY,...
         20, brighten(scatterCol,0.6), 'filled', 'MarkerFaceAlpha',0.5)
     %scatter(checWTdelLactisSwap.sumProm.(m1)(oldLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(oldLog)/maxY,20, scatterCol, 'filled','MarkerEdgeColor', markerCol)
@@ -547,16 +534,13 @@ for i = 1:size(examplePairs,1)
     Fneo = 100*sum(neoLog)/sum((zscoreMat(:,1) > min(quantile(zscoreMat(:,1), quantileTH), zscoreTH)));
         text(0.05, 1.1, ...
         sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',11,'VerticalAlignment','bottom', 'HorizontalAlignment', 'left')
-    
     plot(xlim.*[1], absThLac.*[1 1]/maxY, '--','Color', thCol)
     plot(absThM1.*[1 1]/maxX, ylim.*[1], '--','Color', thCol)
     set(gca, 'XTick', [0:0.5:1], 'YTick', [0:0.5:1])
     %fill([absThM1.*[1 1]/maxX, 1,1], [0, absThLac.*[1 1]/maxY,0], brighten(neoCol,-0.4), 'FaceAlpha', 0.3, 'LineStyle', 'none')
     caxis([0 0.8])
     colormap(gca, colMapParalogsTargets)
-
-    
-    
+     
 %     scatter(checWTdelLactisSwap.sumProm.(m1)(nonLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(nonLog)/maxY,...
 %         20, brighten(scatterCol,0.6), 'filled', 'MarkerFaceAlpha',0.5)
 %     hold on
@@ -589,11 +573,9 @@ for i = 1:size(examplePairs,1)
 hold on
     scatter(checWTdelLactisSwap.sumProm.(m2)(neoLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(neoLog)/maxY,...
         20, checWTdelLactisSwap.sumProm.(m1)(neoLog)/max(checWTdelLactisSwap.sumProm.(m1)), 'filled', 'MarkerEdgeColor', neoCol, 'LineWidth',1)    
-    
     scatter(checWTdelLactisSwap.sumProm.(m2)(nonLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(nonLog)/maxY,20, brighten(scatterCol,0.6), 'filled', 'MarkerFaceAlpha',0.5)
     %scatter(checWTdelLactisSwap.sumProm.(m2)(oldLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(oldLog)/maxY,20, scatterCol, 'filled','MarkerEdgeColor', markerCol)
     %scatter(checWTdelLactisSwap.sumProm.(m2)(neoLog)/maxX, checWTdelLactisSwap.sumProm.(lac)(neoLog)/maxY,20, neoCol, 'filled','MarkerEdgeColor', markerCol)
-    
     %xlabel(strrep(m2,'_d', ' \Delta'), 'fontSize',11)
     xlabel(strrep(m2,'_', ' '), 'fontSize',11)
     yticks([])
@@ -622,8 +604,7 @@ hold on
 %         sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',11,'VerticalAlignment','top')
 %     
 %     plot(xlim.*[0.9], absThLac.*[1 1]/maxY,'--','Color',thCol)
-%     plot(absThM2.*[1 1]/maxX,ylim.*[0.9],'--','Color',thCol)
-     
+%     plot(absThM2.*[1 1]/maxX,ylim.*[0.9],'--','Color',thCol)  
     
     % corr matrix
     axes('Position', [xPos+2*(Wscatter+xspacer)+0.04 yPos(i) Wscatter Hscatter])
@@ -657,26 +638,22 @@ hold on
     cbr = colorbar()
     cbr.Position = [xPos+3*(Wscatter+xspacer)+0.04 yPos(i) 0.0048 Hscatter]
     set(cbr, 'Ticks', [0.4:0.2:1], 'fontSize',11)
-    ylabel(cbr,'correlation', 'fontSize',15)
-    
-    
+    ylabel(cbr,'correlation', 'fontSize',15)    
         if i ==1
-                axes('Position', [xPos yPos(i)-0.06 2*Wscatter+xspacer 0.05])
+            axes('Position', [xPos yPos(i)-0.06 2*Wscatter+xspacer 0.05])
             caxis([0 0.8])
             colormap(gca, colMapParalogsTargets);
             cbr = colorbar('Location', 'southoutside')
             axis off
-                        set(cbr, 'Ticks', [0:0.4:0.8], 'fontSize',11)
+            set(cbr, 'Ticks', [0:0.4:0.8], 'fontSize',11)
             ylabel(cbr, 'Paralog signal (in mutant background)', 'fontSize',12)            
-    end
+        end
 end
-
-
 % saveas(gcf, 'Fig4Examples.svg')
 
 
-%%  summary plot - Deletions corr with lactis - 
-% calculating parameters based onTrees 
+%% Figure 7C - summary plot
+% calculating parameters based on trees 
 load('promCorrSort.mat')
 groups = fieldnames(promCorrSort);
 clear m1Closer t1 t2 zscoreMat m1Neo m2Neo
@@ -771,7 +748,6 @@ maxCloser = (maxIdx == 1 & m1Closer') |  (maxIdx == 2 & ~m1Closer');
 sc = scatter(m1m2Corr,maxCorr, 40+120*maxCloser, WTsCorr, 'filled', 'MarkerEdgeColor','k');
 % errorbar(m1m2Corr, maxCorr, y1Err,y1Err, xErr, xErr, 'LineStyle','none', 'color','k', 'lineWidth', 1.5)
 errorbar(m1m2Corr, maxCorr, y1Err,y1Err,xErr,xErr,  'LineStyle','none', 'color','k', 'lineWidth', 1.1,'CapSize',capSize)
-
 hold on
 sc = scatter(m1m2Corr,minCorr, 40+120*(~maxCloser), WTsCorr, 'filled','MarkerFaceAlpha',0.1, 'MarkerEdgeAlpha',0.1,'MarkerEdgeColor','k');
 % errorbar(m1m2Corr, minCorr, y2Err,y2Err, xErr, xErr, 'LineStyle','none', 'color','k', 'lineWidth', 1.5)
@@ -796,11 +772,10 @@ text(m1m2Corr(m1m2Corr<0.8)+0.015,minCorr(m1m2Corr<0.8),  t12(sub2ind(size(t12),
 Rsf2Tda9Idx = find(contains(t1,{'Rsf2','Tda9'}));
 text(m1m2Corr(Rsf2Tda9Idx)+0.015,maxCorr(Rsf2Tda9Idx), t1(Rsf2Tda9Idx), 'FontSize',15)
 text(m1m2Corr(Rsf2Tda9Idx)+0.015,minCorr(Rsf2Tda9Idx), t2(Rsf2Tda9Idx), 'FontSize',15, 'Color', [0.7 0.7 0.7])
-
 % saveas(gcf, 'Fig4SummaryPlotWithSTD.svg')
 
 
-%% summary sub vs neo
+%% Figure 7D - sub vs neo plot
 xvalue = abs(m1LacCorr - m2LacCorr);
 % barColM =  cbrewer2('BuPu');
 barColM =  flipud(gray);
@@ -831,221 +806,3 @@ fill([0 1 0 0], [1 1 0 1], colNeoSub(2,:),'EdgeColor', [1 1 1])
 axis off
 text(0, 1, ' sub', 'Color', [1 1 1], 'HorizontalAlignment','left', 'VerticalAlignment','top','fontSize',11,'FontWeight','bold')
 text(1, 0, 'neo ', 'Color', [1 1 1], 'HorizontalAlignment','right', 'VerticalAlignment','bottom','fontSize',11,'FontWeight','bold')
-
-
-%% Examples: neo, sub - sequence alignment, tree, scatters mutants against the lactis and corr matrix (sumProm,motifs)
-DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
-DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
-examplePairs = {'Rph1','Gis1'; 'Vhr1','Vhr2'; 'Tda9','Rsf2'};
-AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
-B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
-B62(22,:) = -8;
-B62(:,22) = -8;
-colMapAlignment =brighten([1 1 1; flipud(bone)],0.8);
-scatterCol = [51 51 51]/255%[148 175 211]/255;
-markerCol = brighten(scatterCol, -0.5);
-DBDboxCol = [135 48 146]/255;
-intBases = createIntBasesForMotif();
-cMapCorr = brighten(flipud(bone),0.2);
-colSpot = [[140 113 180]/255;[148 175 211]/255];
-neoCol = [148 175 211]/255;
-
-zscoreTH = 4.5;
-zscoreTHL = 3.5;
-
-Walign = 0.1;
-Wtree =0.1;
-Htree = 0.05;
-xspacer = 0.005;
-yspacer = 0.05;
-xPos = [0.05];
-yPos = [0.1, 0.4 0.7];
-Wscatter = ((Wtree+Walign+5*xspacer)-xspacer)/3;
-Hscatter = Wscatter*1.8;
-Halign = (Htree-yspacer/5)/3;
-zscoreTH = 4.5;
-zscoreTHL = 3.5;
-quantileTH = 1;
-
-
-figure('Units','normalized','Position', [0 0 0.5 1], 'color','w')
-for i = 1:size(examplePairs,1)
-    % Tree
-    [order,b] = plotTrees(examplePairs(i,:),[xPos+Walign+5*xspacer yPos(i)+Hscatter+yspacer Wtree+0.08 Htree], gcf,'colSpot',colSpot);
-    set(gcf, 'color','w')
-    TF1 = examplePairs{i,order(1)};
-    TF2 = examplePairs{i,order(2)};
-
-    % sequence alignment
-    if ismember(upper(TF1), extractfield(paraSeqs,'name'))
-        [~, idx] = ismember(upper(TF1), extractfield(paraSeqs,'name'));
-        pSeq = paraSeqs(idx).seq([22,12]) ;
-    elseif ismember(upper(TF2), extractfield(paraSeqs,'name'))
-        [~, idx] = ismember(upper(TF2), extractfield(paraSeqs,'name'));
-        pSeq = paraSeqs(idx).seq([12,22]) ;
-    end
-    
-    if ~isempty(paraSeqs(idx).seq{18})
-        ancSeq = paraSeqs(idx).seq{18};
-        MSAanc = 'lactisMSAscore';
-        ancLabel = 'Klac';
-        ancIdx = 18;
-    elseif ~isempty(paraSeqs(idx).seq{20})
-        ancSeq = paraSeqs(idx).seq{20};
-        MSAanc = 'ZrouMSAscore';
-        ancLabel = 'Zrou';
-        ancIdx = 20;
-    else
-        ancSeq = paraSeqs(idx).seq{17};
-        MSAanc = 'EgosMSAscore';
-        ancLabel = 'Egos';
-        ancIdx = 17;
-    end
-    maxLength = max(cellfun('prodofsize', [ancSeq;pSeq]));
-    if ~isempty(ancSeq)
-        clear posScore gaps
-        for p =1:2
-            [~,alignmentLac] = nwalign(pSeq{p}(1:end-1),ancSeq(1:end-1));
-            [~, idxPara] = ismember(alignmentLac(1,:)', AAorder);
-            [~, idxLac] = ismember(alignmentLac(3,:)', AAorder);
-            posScore{p} = B62(sub2ind(size(B62), idxPara,idxLac));
-            gaps{p} = strfind(alignmentLac(1,:), '-');
-            posScoreNoGaps{p} = posScore{p}(setdiff(1:length(posScore{p}), gaps{p}));
-        end
-        imageMat = nan(2, maxLength);
-        for p =1:2
-            imageMat(p,1:length(posScoreNoGaps{p})) = posScoreNoGaps{p};
-        end
-        axes('Position', [xPos yPos(i)+Hscatter+yspacer Walign Halign*2])
-        paraLength = sum(~isnan(imageMat),2);
-        imageMat = movmean(imageMat,20,2, 'omitnan').*((imageMat+50)./(imageMat+50));
-        imagesc(imageMat);
-        colorLabel = sprintfc('\\color[rgb]{%.2f,%.2f,%.2f}',colSpot);
-        set(gca, 'YTick',[1,2], 'YTickLabel', strcat(colorLabel','\fontsize{12}\bf', {TF1,TF2}), 'XTick', [], 'XColor', [1 1 1 0])
-        
-        % DBD annotations Scer
-        hold on
-        for p = 1:2
-            currDBD = DBDallParas(strcmp(DBDallParas.queryName, sprintf('Scer_%s',upper(eval(sprintf('TF%d',p))))),:);
-            for d = 1:size(currDBD,1)
-                xVec = [currDBD.from_2(d),currDBD.to_2(d),currDBD.to_2(d), currDBD.from_2(d), currDBD.from_2(d)];
-                yVec = [1.5, 1.5, 0.5, 0.5, 1.5]+p-1;
-                plot(xVec, yVec, 'color', DBDboxCol, 'LineWidth',2)
-            end
-        end
-        
-        plot([0,max(paraLength)]+0.5, [1.5 1.5], 'k');
-        plot(paraLength(1)*[1 1], [0.5, 1.5], 'k');
-        plot(paraLength(2)*[1 1], [1.5, 2.5], 'k');
-        plot([0,paraLength(1)]+0.5, [0.5 0.5], 'k');
-        plot([0,paraLength(2)]+0.5, [2.5 2.5], 'k');
-        colormap(gca, colMapAlignment);
-        caxis([-8.5 7]);
-        box off;
-        
-        % lactis - alignment
-        axes('Position', [xPos yPos(i)+Hscatter+1.2*yspacer+2*Halign Walign Halign])
-        if isfield(eval(MSAanc), upper(TF1))
-            lacScore = eval(sprintf('%s.(upper(TF1))', MSAanc));
-        elseif isfield(eval(MSAanc), upper(TF2))
-            lacScore = eval(sprintf('%s.(upper(TF2))', MSAanc));
-        end
-        minYlim = min(movmean(lacScore,10,'omitnan'));
-        maxYlim = max(movmean(lacScore,10,'omitnan'));
-        imagesc(movmean(lacScore,20,'omitnan'));
-        xticks([]);
-        axis tight
-        caxis([-8.5 7]);
-        yticks(1)
-        yticklabels(sprintf('\\it%s(%d)',ancLabel, maxLength))
-        set(gca,'fontSize',12);
-        colormap(gca, colMapAlignment);
-        box on;
-        
-        % DBD annotations lac
-        hold on
-        currDBD = DBDallParas(contains(DBDallParas.queryName, {sprintf('%s_%s/%s',ancLabel, upper(TF1),upper(TF2)),sprintf('%s_%s/%s',ancLabel, upper(TF2),upper(TF1))}),:);
-        for d = 1:size(currDBD,1)
-            xVec = [currDBD.from_2(d),currDBD.to_2(d),currDBD.to_2(d), currDBD.from_2(d), currDBD.from_2(d)];
-            yVec = [1.5, 1.5, 0.5, 0.5, 1.5];
-            plot(xVec, yVec, 'color', DBDboxCol, 'LineWidth',2)
-        end
-        
-        cbr = colorbar()
-        cbr.Position = [xPos+Wtree+0.002 yPos(i)+Hscatter+yspacer 0.0048 Htree]
-        set(cbr, 'Ticks', [min(caxis) max(caxis)], 'TickLabels', [])
-        ylabel(cbr, 'Alignment\newline     score', 'fontSize',10)
-    end
-    
-    
-    
-    % scatter1
-    axes('Position', [xPos yPos(i) Wscatter Hscatter])
-    m1 = [TF1,'_d',upper(TF2)];
-    m2 = [TF2,'_d',upper(TF1)];
-    lac = [TF1, '_lactis'];
-    zscoreMat = nan(6701,3);
-    zscoreMat(:,1) =  nanZscore(checWTdelLactisSwap.sumProm.(m1))';
-    zscoreMat(:,2) =  nanZscore(checWTdelLactisSwap.sumProm.(m2));
-    zscoreMat(:,3) =  nanZscore(checWTdelLactisSwap.sumProm.(lac));
-    neoLog = (zscoreMat(:,1) > zscoreTH) &  (zscoreMat(:,3) < zscoreTHL);
-    scatter(checWTdelLactisSwap.sumProm.(m1), checWTdelLactisSwap.sumProm.(lac),20, scatterCol, 'filled','MarkerEdgeColor', markerCol)
-    hold on
-    scatter(checWTdelLactisSwap.sumProm.(m1)(neoLog), checWTdelLactisSwap.sumProm.(lac)(neoLog),20, neoCol, 'filled','MarkerEdgeColor', markerCol)
-    xlabel([strrep(m1,'_d', ' \Delta'),'    '], 'fontSize',11)
-    ylabel('\itK.lac','fontSize',11)
-    ylim(1.2*ylim);
-    crValue = corr(checWTdelLactisSwap.sumProm.(m1), checWTdelLactisSwap.sumProm.(lac),'rows','pairwise');
-    Fneo = 100*sum(neoLog)/sum((zscoreMat(:,2) > min(quantile(zscoreMat(:,2), quantileTH), zscoreTH)));
-        text(0.05*max(xlim), 0.99*max(ylim), ...
-        sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',11,'VerticalAlignment','top')
- 
-    
-    % scatter2
-    axes('Position', [xPos+Wscatter+xspacer yPos(i) Wscatter Hscatter])
-    neoLog = (zscoreMat(:,2) > zscoreTH) &  (zscoreMat(:,3) < zscoreTHL);
-    scatter(checWTdelLactisSwap.sumProm.(m2), checWTdelLactisSwap.sumProm.(lac),20,scatterCol, 'filled', 'MarkerEdgeColor', markerCol)
-    hold on
-    scatter(checWTdelLactisSwap.sumProm.(m2)(neoLog), checWTdelLactisSwap.sumProm.(lac)(neoLog),20, neoCol, 'filled','MarkerEdgeColor', markerCol)
-    xlabel([strrep(m2,'_d', ' \Delta'),'    '],'fontSize',11)
-    yticks([])
-    ylim(1.2*ylim);
-    Fneo = 100*sum(neoLog)/sum((zscoreMat(:,2) > min(quantile(zscoreMat(:,2), quantileTH), zscoreTH)));
-       crValue = corr(checWTdelLactisSwap.sumProm.(m2), checWTdelLactisSwap.sumProm.(lac),'rows','pairwise')
-    text(0.05*max(xlim), 0.99*max(ylim), ...
-        sprintf('r=%.2f, \\color[rgb]{%.2f, %.2f, %.2f}new=%.0f%%', crValue,brighten(neoCol,-0.4), Fneo), 'FontSize',11,'VerticalAlignment','top')
-    
-    % corr matrix
-    axes('Position', [xPos+2*(Wscatter+xspacer)+0.04 yPos(i) Wscatter Hscatter])
-    intStrains = {lac, TF1,m1,TF2,m2};
-    % WITH REPEATS
-    %     [corrSumProm, idxSumProm] = getRepeatsCorr(intStrains, 'dataType','sumProm');
-    %     [corr7mer, ~] = getRepeatsCorr(intStrains, 'dataType','7mer');
-    %     combineMat = tril(corrSumProm) + triu(corr7mer,1);
-    %     imagesc(combineMat)
-    %     borders = [0; cumsum(accumarray(idxSumProm,1))]+0.5;
-    %     tickPos = movmean(borders,2,'Endpoints','discard');
-    %     hold on
-    %     plot(repmat(borders',2,1), repmat(ylim',1, numel(borders)), 'k')
-    %     plot(repmat(ylim',1, numel(borders)), repmat(borders',2,1), 'k')
-    
-    % WITHOUT REPEATS
-    corrSumProm = plotSumPromCorr(intStrains, checWTdelLactisSwap,0);
-    normProfile = chromosomes2fullProfile(checWTdelLactisSwap, intStrains);
-    mers = mer_occupancy(normProfile, 7, 'method','else','intBases',intBases);
-    corr7mer = corr(mers.score);
-    combinedMat = tril(corrSumProm) + triu(corr7mer,1);
-    imagesc(combinedMat)
-    plotgrid(combinedMat)
-    plot(xlim, ylim,'color', [0.7 0.7 0.7], 'LineWidth',1)
-    colormap(gca, cMapCorr)
-    caxis([0.3 1])
-    set(gca, 'YTick', [1:numel(intStrains)], 'YTickLabel',regexprep(intStrains, {'_d','.*_lactis'},{' \\Delta', '\\itK.lac'}), 'XTick',[], 'fontSize',9)
-    hold on
-    plot(xlim, ylim, 'color',[0.7 0.7 0.7])
-    cbr = colorbar()
-    cbr.Position = [xPos+3*(Wscatter+xspacer)+0.04 yPos(i) 0.0048 Hscatter]
-    set(cbr, 'Ticks', [0.4:0.2:1], 'fontSize',11)
-    ylabel(cbr,'correlation', 'fontSize',15)
-end
-set(gcf, 'color','w')
