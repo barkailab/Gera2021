@@ -1,4 +1,4 @@
-%% supplementary Fig6
+%% Figure 9—figure supplement 1.
 clearvars -except checWTdelLactisSwap GP
 load('summaryTable.mat')
 geneName = reshape([summaryTable.p1';summaryTable.p2'], 1,[]);
@@ -15,19 +15,16 @@ end
 if ~exist('GP','var')
     GP=load('./group_imp.mat')
 end
-%% new version with repeats
+
+
+%% Figure 9—figure supplement 1B
 clearvars -except GP checWTdelLactisSwap SC_genomeCat allSamples
-load('SC_genome.mat')
-SC_genomeCat=upper(cat(2,SC_genome.Sequence));
-load('promoterLengthsORF.mat')
 load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/promoterOL.mat','perOverlap','totalOL')
 TargetsSortForFig5=readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
 zscoreTHclus = 4;
 examplePairs = {'Vhr2','Vhr1'; 'Yap2','Yap1'; 'Swi5','Ace2'; 'Rlm1','Smp1';'Fkh2','Fkh1'};
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
-GP=load('/home/labs/barkailab/felixj/Documents/MATLAB/scripts/gene/group_imp.mat');
 
-% targets = {'GSY2','HAP5'};
 patternsColl{1} = {'TGACT[CA]|[TG]AGTCA'}
 patternsColl{2} = {'T[TG]AC[TA]AA|TT[AT]GT[CA]A'};
 patternsColl{3} = {'GCTGG|CCAGC'};
@@ -160,7 +157,6 @@ for tf = 1:size(examplePairs,1)
     setAxisExponent()
     xlabel(TF1,'fontSize',12)
     ylim([0 max(countsH)])
-    
     legend()
     
     % scatters with movement
@@ -229,14 +225,10 @@ for tf = 1:size(examplePairs,1)
             xlabel(labelSamples{1},'fontSize',12)
             ylabel(labelSamples{2},'fontSize',12)
             setAxisExponent()
-            
-            legend([pUp,pDown],'Location','northeast')
-            
+            legend([pUp,pDown],'Location','northeast')          
         end
     end
-    
 
-    
     % zscores
     intStrains = {TF1,TF2,lac};
     clear patternCorrMat
@@ -248,8 +240,7 @@ for tf = 1:size(examplePairs,1)
         uTargetIdx = unique(cat(1, idxMax{:})', 'stable');
         k=k+1;
     end
-    
-    
+
     %[~,selProms]=ismember(targetList,GP.gene_infoR64.nameNew);
     %uTargetIdx=[uTargetIdx(ismember(uTargetIdx,selProms)),uTargetIdx(~ismember(uTargetIdx,selProms))];
     %uTargetIdx = uTargetIdx(ismember(uTargetIdx, TargetsSortForFig5.([zc{tf,1},'_',zc{tf,2}])));
@@ -284,7 +275,6 @@ for tf = 1:size(examplePairs,1)
             sumSignalPattern(g,p,2) = sum(checWTdelLactisSwap.norm.(TF2){GP.gene_infoR64.position(uTargetIdx(g),1)}(intPromPos))./sum(checWTdelLactisSwap.norm.(TF2){GP.gene_infoR64.position(uTargetIdx(g),1)}(promPos));
         end
     end
-    
     nPatternInPromoter = occPattern(uTargetIdx,:)';
     
     % zscore:
@@ -321,9 +311,7 @@ for tf = 1:size(examplePairs,1)
     end 
     zScoreSelectedTargetsMean =  zScoresMat(uTargetIdx,:);
     clearvars zScoresMat
-    
-    
-    
+
     % log2 fold change
     clear normFactor logChange
     for par = 1:2
@@ -361,13 +349,9 @@ for tf = 1:size(examplePairs,1)
        end
        [~, idx] = sortrows(table(clusterIdx',valForSort'), [1,2]);
    end
-    
+
     % imagesc Zscores    
-    
-    
     axes('Position', [xPos(tf)+0.54 yPos(tf) Wline*3 Hline])
-    
-    
     imagesc(zScoreSelectedTargets(idx,:))
     hold on
     plot([maxSize 2*maxSize]+[0.5;.5],ylim,'k-')
@@ -376,7 +360,6 @@ for tf = 1:size(examplePairs,1)
     set(gca,'YTick', 1:numel(idx),  'XTick',[(maxSize+1)/2 maxSize+(maxSize+1)/2 maxSize*2+(maxSize/2+1)/2], 'XTickLabel', {TF1,TF2,'klac'}, 'fontSize',11, 'TickLength',[0 0],'YTickLabel',sprintfc('%d',uTargetIdx(idx)));
     colormap(gca,cMapZscores)    
    
-    
     % imagesc log2 fold change
     XL={'DeltaP2','DeltaP1','S1','S2'};
     axes('Position', [xPos(tf)+0.54+Wline*3.5 yPos(tf) Wline*2 Hline])
@@ -388,19 +371,6 @@ for tf = 1:size(examplePairs,1)
     if any(all(isnan(logChangeSelectedTargets([3,4],:)),2),1)
         xlim([.5 2.5])
     end
-%     % imagesc pattern
-%     axes('Position', [xPos(tf)+0.54+Wline*6 yPos(tf) Wline*2 Hline])    
-%     [~,idxForPattern] = max( zScoreSelectedTargets(1:2,idx),[],1);
-%     sumSignalPatternPlot=nan(size(sumSignalPattern,[1,2]));
-%     
-%     for p=1:numel(pattern)
-%         sumSignalPatternPlot(:,p) = sumSignalPattern(sub2ind(size(sumSignalPattern), 1:size(sumSignalPattern,1), repmat(1,1, size(sumSignalPattern,1)), idxForPattern))';
-%     end
-%     imagesc(sumSignalPatternPlot(idx,:))
-%     plotgrid(sumSignalPatternPlot(idx,:))
-%     caxis([0 .7])
-%     set(gca, 'XTick', [1:numel(pattern)], 'XTickLabel', {'mA','mB'},'YTick',[])
-%     colormap(gca,cMapMotifs)    
         if mod(tf,2)==0
 %            save_gf(gcf,sprintf('FigS6_TF%d',tf),'paper','tamar21','type','svg','size',[])
             %close(gcf)
@@ -436,11 +406,11 @@ axis off
 ylabel(cbr,'#motifs', 'fontSize',10)
 set(cbr, 'Ticks', [min(caxis)+0.5:1:max(caxis)-0.5] , 'TickLabels', {[0:max(caxis)-2.5], '>2'},'TickLength',[0 0])
 
-%% alignment of domains for Rph1 and Gis1
+
+%% Figure 9—figure supplement 1A: alignment of domains for Rph1 and Gis1
 multiAlign = multialignread('/home/labs/barkailab/felixj/proteinStruct/allSeqs/treeConst/mCoffee/GIS1_fl.clustal')
 jmjcPos = [510:538];
 DBDPos = [1687:1745];
-
 
 for i = 1:numel(multiAlign)
     alignForPlot(i).Sequence = [multiAlign(i).Sequence(jmjcPos), '---', multiAlign(i).Sequence(DBDPos)];
