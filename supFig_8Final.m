@@ -1,14 +1,14 @@
 %% Figure 8—figure supplement 1
 clearvars -except checWTdelLactisSwap
 load('checWTdelLactisSwap.mat')
-allDomain = readtable('/home/labs/barkailab/felixj/proteinStruct/allDomainsAdj.txt');
+allDomain = readtable('./allDomainsAdj.txt');
 intDomains = {'Zn_clus','zf-C2H2','Forkhead','KilA-N','bZIP_1','Vhr1','Homeodomain','Myb_DNA-binding','SRF-TF',...
     'AFT','GATA','Copper-fist','HSF_DNA-bind','zf-MIZ','HMG_box','TIG','zf-BED'};
 allDBD = allDomain(ismember(allDomain.x_TargetName,intDomains),:);
 KlacDBDs = allDBD(contains(allDBD.queryName,'Klac'),:);
 ScerDBDs = allDBD(contains(allDBD.queryName,'Scer'),:);
 ScerDBDs = ScerDBDs(ScerDBDs.score_1>0,:);
-load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/promoterOL.mat','perOverlap','totalOL')
+load('./promoterOL.mat','perOverlap','totalOL')
 GP=load('group_imp.mat')
 load('promoterLengthsORF.mat')
 load('promoterIDXvec.mat');
@@ -26,9 +26,9 @@ colMapAlignment =brighten([1 1 1; flipud(bone)],0.6);
 %DBDboxCol = [135 48 146]/255;
 DBDboxCol = [0 230 230]/255;
 
-CCpredictionsWJpred = load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/CCpredictionsWJpred.mat')
+CCpredictionsWJpred = load('./CCpredictionsWJpred.mat')
 load('iupred2.mat')
-load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/paraSeqs.mat');
+load('./paraSeqs.mat');
 %targets = {'YCR102C','MGA1','TPO1' ; 'ACS1','EEB1' ''; 'RPN4','','RSB1'; 'SNQ2','','SAM1'};
 %targets = { 'YCR102C','TPO1','HXT6' ; 'ACS1','EEB1' 'INO1'; 'RPN4','RSB1','PDR3'; 'PLB1','AZR1','SAM1'}%; 'CCW12','YKL044W','PHD1'};
 
@@ -38,7 +38,7 @@ targets = {'NRG1','CWP2';'ERG25','ERG11'};
 patternsColl{1} = {'GGCCA|TGGCC','GGCCG|CGGCC' };
 patternsColl{2} = {'TATACGA|TCGTATA','TAAACGA|TCGTTTA' };
 
-TargetsSortForFig5 = readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
+TargetsSortForFig5 = readtable('./TargetsSortForFig8.xlsx');
 patternLoc = [-430, -543;-482,-849];
 intoGene = 100;
 promoterLengthPlot = 900;

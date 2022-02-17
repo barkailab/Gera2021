@@ -3,7 +3,7 @@ clearvars -except checWTdelLactisSwap
 load('paraSeqs.mat')
 load('summaryTable.mat')
 load('promoterIDXvec.mat')
-allDomain = readtable('/home/labs/barkailab/felixj/proteinStruct/allDomainsAdj.txt');
+allDomain = readtable('./allDomainsAdj.txt');
 intDomains = {'Zn_clus','zf-C2H2','Forkhead','KilA-N','bZIP_1','Vhr1','Homeodomain','Myb_DNA-binding','SRF-TF',...
     'AFT','GATA','Copper-fist','HSF_DNA-bind','zf-MIZ','HMG_box','TIG','zf-BED'};
 allDBD = allDomain(ismember(allDomain.x_TargetName,intDomains),:);
@@ -11,17 +11,17 @@ KlacDBDs = allDBD(contains(allDBD.queryName,'Klac'),:);
 ScerDBDs = allDBD(contains(allDBD.queryName,'Scer'),:);
 ScerDBDs = ScerDBDs(ScerDBDs.score_1>0,:);
 ccPredictions = load('ccPredictions.mat');
-CCpredictionsWJpred = load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/CCpredictionsWJpred.mat')
+CCpredictionsWJpred = load('./CCpredictionsWJpred.mat')
 ccTH = 0.2; 
 colRangeCC = [ccTH:0.01:1];
 %ccColMap = cbrewer2('PuBu', length(colRangeCC)); 
 ccColMap = brewermap( length(colRangeCC),'PuBu'); 
 load('iupred2.mat')
-h3cc=load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Naama/H3CC_henikoff.mat');
+h3cc=load('./H3CC_henikoff.mat');
 h3smooth=conv(mean(h3cc.p_all,2),normpdf([-50:50]',0,25),'same');
 load('SC_genome.mat')
 SC_genomeCat=upper(cat(2,SC_genome.Sequence));
-GP=load('/home/labs/barkailab/felixj/Documents/MATLAB/scripts/gene/group_imp.mat');
+GP=load('./group_imp.mat');
 if ~exist('checWTdelLactisSwap','var')
     load('checWTdelLactisSwap.mat')
 end
@@ -49,11 +49,11 @@ colMapAlignment =brighten([1 1 1; flipud(bone)],0.6);
 %DBDboxCol = [135 48 146]/255;
 DBDboxCol = [0 230 230]/255;
 
-% CCpredictionsWJpred = load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/CCpredictionsWJpred.mat')
+% CCpredictionsWJpred = load('./CCpredictionsWJpred.mat')
 % load('iupred2.mat')
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 zc = {'Tbs1', 'Hal9';'Oaf1','Pip2';'Pdr1','Pdr3'; 'Yrr1','Pdr8'}%; 'Skn7','Hms2'};
-TargetsSortForFig5 = readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
+TargetsSortForFig5 = readtable('./TargetsSortForFig8.xlsx');
 targets = { 'YCR102C','TPO1' ; 'ACS1','EEB1'; 'RPN4','PDR3'; 'SNQ2','RSB1'}
 patternLoc = [-310, -612; -419, -164; -438, -219; -516,-811];
 

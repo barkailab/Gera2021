@@ -164,7 +164,7 @@ B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
 B62(22,:) = -8;
 B62(:,22) = -8;
 
-ancestorMSA = dir('/home/labs/barkailab/felixj/proteinStruct/allSeqs/treeConst/mCoffee/*_fl.clustal*');
+ancestorMSA = dir('./mCoffee/*_fl.clustal*');
 for a = 1:numel(ancestorMSA)
     msa = multialignread([ancestorMSA(a).folder,'/',ancestorMSA(a).name]);
     msa = msa(contains({msa.Header}, 'x'));
@@ -212,7 +212,7 @@ end
 
 
 %% Figure 6B - Ixr1 Abf2 tree and sequence alignment
-DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
+DBDallParas = readtable('./allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 examplePairs = {'Ixr1','Abf2'};
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};

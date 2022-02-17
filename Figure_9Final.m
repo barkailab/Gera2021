@@ -18,7 +18,7 @@ GP=load('./group_imp.mat')
 %% Figure 9A-D
 examplePairs = {'Gis1','Rph1'};
 targets = {'GSY2','HAP5'};
-TargetsSortForFig5 = readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
+TargetsSortForFig5 = readtable('./TargetsSortForFig8.xlsx');
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 
 patternsColl{1} = {'[ACG]A[AG]GGG[AT]|[AT]CCC[CT]T[CGT]','TA[GA]GGG[AT]|[AT]CCC[CT]TA'};

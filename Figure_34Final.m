@@ -139,7 +139,7 @@ HLproms={[2370,2209,4765,4785,759,4718,5543,28],[3317 4498 1319 2113 1617 1865],
 load('promoterLengthsORF.mat')
 GP=load('./group_imp.mat')
 patterns = {'CCCCT|AGGGG','CATCG|CGATG', 'CGGA.AT|AT.TCCG', }%'TGTTT|AAACA'}
-pfamAlignFiles = dir('/home/labs/barkailab/felixj/SimilarityRegression-master/Example/ScerDBD/*.psi')
+pfamAlignFiles = dir('./ScerDBD/*.psi')
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y', '-'};
 groupSize = [2,3,8,7,1];
 baseColor = [255, 92, 51; 128, 191, 255; 255, 214, 51; 55, 153, 102]/255;
@@ -173,7 +173,7 @@ Wscatter = Hscatter/2;
 for i = [1,2,3]%: size(exampleStrains,1)
     figure('Units','normalized','Position', [0.0523 0.3602 0.3386 0.4037], 'color','w')
     % barcode
-    DBDalign = multialignread(['/home/labs/barkailab/felixj/SimilarityRegression-master/Example/ScerDBD/',intPsiFiles{i}]);
+    DBDalign = multialignread(['./ScerDBD/',intPsiFiles{i}]);
     [~, sortPos] = ismember(extractBetween(extractfield(DBDalign, 'Header'),'_','_'), upper(exampleStrains(i,:)));
     DBDalign(sortPos == 0) = [];
     [~,sortPos] = sort(sortPos(sortPos>0));

@@ -19,8 +19,8 @@ end
 
 %% Figure 9—figure supplement 1B
 clearvars -except GP checWTdelLactisSwap SC_genomeCat allSamples
-load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/promoterOL.mat','perOverlap','totalOL')
-TargetsSortForFig5=readtable('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/forPaper/TargetsSortForFig5.xlsx');
+load('./promoterOL.mat','perOverlap','totalOL')
+TargetsSortForFig5=readtable('./TargetsSortForFig8.xlsx');
 zscoreTHclus = 4;
 examplePairs = {'Vhr2','Vhr1'; 'Yap2','Yap1'; 'Swi5','Ace2'; 'Rlm1','Smp1';'Fkh2','Fkh1'};
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
@@ -408,7 +408,7 @@ set(cbr, 'Ticks', [min(caxis)+0.5:1:max(caxis)-0.5] , 'TickLabels', {[0:max(caxi
 
 
 %% Figure 9—figure supplement 1A: alignment of domains for Rph1 and Gis1
-multiAlign = multialignread('/home/labs/barkailab/felixj/proteinStruct/allSeqs/treeConst/mCoffee/GIS1_fl.clustal')
+multiAlign = multialignread('./mCoffee/GIS1_fl.clustal')
 jmjcPos = [510:538];
 DBDPos = [1687:1745];
 

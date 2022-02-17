@@ -8,7 +8,7 @@ load('SC_genome.mat')
 load('Abf2Ixr1.mat')
 load('./treeFiles.mat');
 load('./paraSeqs.mat');
-load('/home/labs/barkailab/felixj/Documents/MATLAB/projects/Tamar/paraSeqs.mat');
+load('./paraSeqs.mat');
 
 %% Figure 7—figure supplement 1A: histogram promoter binding signal correlations all samples vs repeats
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
@@ -50,7 +50,7 @@ B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
 B62(22,:) = -8;
 B62(:,22) = -8;
 
-ancestorMSA = dir('/home/labs/barkailab/felixj/proteinStruct/allSeqs/treeConst/mCoffee/*_fl.clustal*');
+ancestorMSA = dir('./mCoffee/*_fl.clustal*');
 for a = 1:numel(ancestorMSA)
     msa = multialignread([ancestorMSA(a).folder,'/',ancestorMSA(a).name]);
     msa = msa(contains({msa.Header}, 'x'));
@@ -97,7 +97,7 @@ for a = 1:numel(ancestorMSA)
 end
 
 % plot trees + alignments
-DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
+DBDallParas = readtable('./allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 examplePairs = [summaryTable.p1,summaryTable.p2];
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
@@ -247,14 +247,14 @@ axis off
 
 
 %% Figure 7—figure supplement 1B: scatters deletion mutants against K.lactis and corr matrix (sumProm,motifs)
-DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
+DBDallParas = readtable('./allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 allSamples = fieldnames(checWTdelLactisSwap.sumProm);
 lacNames = allSamples(contains(allSamples, '_lactis')& ~contains(allSamples,{'Sut1','Ixr1','Nhp6B','Nfi1'}));
 examplePairsIdx = find(ismember(summaryTable.p1, extractBefore(lacNames,'_lactis')) | ismember(summaryTable.p2, extractBefore(lacNames,'_lactis')));
 examplePairs = [summaryTable.p1(examplePairsIdx),summaryTable.p2(examplePairsIdx)];
 
-DBDallParas = readtable('/home/labs/barkailab/felixj/proteinStruct/allDBDpara.xls');
+DBDallParas = readtable('./allDBDpara.xls');
 DBDallParas = DBDallParas(contains(DBDallParas.queryName, {'Scer','Klac','Zrou','Egos'}),:);
 AAorder = {'D', 'E', 'K', 'R','H', 'A', 'W', 'V', 'I', 'L', 'P', 'F', 'M', 'T', 'S', 'N', 'G', 'Q', 'C', 'Y','X', '-'};
 B62 = blosum(62,'Order', cat(2,AAorder{1:end-1}));
